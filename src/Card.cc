@@ -1,37 +1,37 @@
 #include "Card.h"
 
 
-RussianBank::Card::Card(): rank_(0), suit_(0), deck_(false) {}
+Card::Card(): rank_(0), suit_(0), deck_(false) {}
 
 
-RussianBank::Card::Card(int rank, int suit, bool deck):
+Card::Card(int rank, int suit, bool deck):
     rank_(rank), suit_(suit), deck_(deck) {}
 
 
-RussianBank::Card::~Card(){}
+Card::~Card(){}
 
 
-int RussianBank::Card::getRank() const {
+int Card::getRank() const {
     return rank_;
 }
 
 
-int RussianBank::Card::getColor() const {
+int Card::getColor() const {
     return suit_ & 1;
 }
 
 
-int RussianBank::Card::getSuit() const {
+int Card::getSuit() const {
     return suit_;
 }
 
 
-int RussianBank::Card::getDeck() const {
+int Card::getDeck() const {
     return deck_;
 }
 
 
-std::string RussianBank::Card::getCard() const {
+std::string Card::getCard() const {
     using namespace std;
     string card_string = "";
 
@@ -59,7 +59,7 @@ std::string RussianBank::Card::getCard() const {
 }
 
 
-bool RussianBank::Card::isPlayableTable(const RussianBank::Card other_card)
+bool Card::isPlayableTable(const Card other_card)
     const {
     if (((suit_ ^ other_card.getSuit()) & 1)
         && (rank_ + 1 == other_card.getRank()))
@@ -69,7 +69,7 @@ bool RussianBank::Card::isPlayableTable(const RussianBank::Card other_card)
 }
 
 
-bool RussianBank::Card::isPlayableOpponent(const RussianBank::Card other_card)
+bool Card::isPlayableOpponent(const Card other_card)
     const {
     if ((suit_ == other_card.getSuit())
         && ((rank_ + 1 == other_card.getRank())
@@ -80,7 +80,7 @@ bool RussianBank::Card::isPlayableOpponent(const RussianBank::Card other_card)
 }
 
 
-bool RussianBank::Card::isPlayableBank(const RussianBank::Card other_card)
+bool Card::isPlayableBank(const Card other_card)
     const {
     if ((suit_ == other_card.getSuit())
         && (rank_ - 1 == other_card.getRank()))

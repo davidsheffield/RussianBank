@@ -4,30 +4,29 @@
 #include <string>
 #include <vector>
 
-namespace RussianBank {
-    class Card
-    {
-    public:
-        Card();
-        Card(int, int, bool);
-        ~Card();
 
-        int getRank() const;
-        int getColor() const;
-        int getSuit() const;
-        int getDeck() const;
-        std::string getCard() const;
-        bool isPlayableTable(const Card) const;
-        bool isPlayableOpponent(const Card) const;
-        bool isPlayableBank(const Card) const;
+class Card
+{
+public:
+    Card();
+    Card(int, int, bool);
+    ~Card();
 
-    private:
-        int rank_;
-        int suit_;
-        bool deck_;
-    };
+    int getRank() const;
+    int getColor() const;
+    int getSuit() const;
+    int getDeck() const;
+    std::string getCard() const;
+    bool isPlayableTable(const Card) const;
+    bool isPlayableOpponent(const Card) const;
+    bool isPlayableBank(const Card) const;
 
-    typedef std::vector<Card> Stack;
-}
+private:
+    int rank_;
+    int suit_;
+    bool deck_;
+};
+
+typedef std::vector<Card> Stack;
 
 #endif

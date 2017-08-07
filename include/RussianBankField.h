@@ -11,14 +11,13 @@ class RussianBankField
 public:
     RussianBankField(const int);
     ~RussianBankField();
-    void cardTest();
 private:
-    RussianBank::Card banks_[4][2];
-    RussianBank::Stack tableau_[8];
-    RussianBank::Stack hidden_stocks_[2];
-    RussianBank::Stack exposed_stocks_[2];
-    RussianBank::Stack hands_[2];
-    RussianBank::Stack wastes_[2];
+    Card banks_[4][2];
+    Stack tableau_[8];
+    Stack hidden_stocks_[2];
+    Stack exposed_stocks_[2];
+    Stack hands_[2];
+    Stack wastes_[2];
 
     void deal(const int);
 };
@@ -29,16 +28,14 @@ using namespace boost::python;
 
 BOOST_PYTHON_MODULE(russianbank)
 {
-    class_<RussianBankField>("RussianBankField", init<int>())
-        .def("cardTest", &RussianBankField::cardTest)
-        ;
-    class_<RussianBank::Card>("Card")
+    class_<RussianBankField>("RussianBankField", init<int>());
+    class_<Card>("Card")
         .def(init<int, int, bool>())
-        .def("getRank", &RussianBank::Card::getRank)
-        .def("getColor", &RussianBank::Card::getColor)
-        .def("getSuit", &RussianBank::Card::getSuit)
-        .def("getDeck", &RussianBank::Card::getDeck)
-        .def("getCard", &RussianBank::Card::getCard)
+        .def("getRank", &Card::getRank)
+        .def("getColor", &Card::getColor)
+        .def("getSuit", &Card::getSuit)
+        .def("getDeck", &Card::getDeck)
+        .def("getCard", &Card::getCard)
         ;
 }
 

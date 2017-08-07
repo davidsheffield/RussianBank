@@ -6,8 +6,6 @@ import russianbank as rb
 def main():
     field = rb.RussianBankField(0)
 
-    field.cardTest()
-
 
 if __name__ == '__main__':
     main()
