@@ -59,6 +59,11 @@ std::string Card::getCard() const {
 }
 
 
+bool Card::isEmpty() const {
+    return rank_ == 0;
+}
+
+
 bool Card::isPlayableTable(const Card other_card)
     const {
     if (((suit_ ^ other_card.getSuit()) & 1)

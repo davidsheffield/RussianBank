@@ -17,6 +17,7 @@ public:
     int getSuit() const;
     int getDeck() const;
     std::string getCard() const;
+    bool isEmpty() const;
     bool isPlayableTable(const Card) const;
     bool isPlayableOpponent(const Card) const;
     bool isPlayableBank(const Card) const;

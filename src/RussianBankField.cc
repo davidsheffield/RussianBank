@@ -30,7 +30,7 @@ void RussianBankField::deal(const int seed) {
     for (int i=0; i<2; ++i) {
         // Deal tableau
         for (int j=0; j<4; ++j) {
-            tableau_[j].push_back(decks[i][j]);
+            tableau_[j+4*i].push_back(decks[i][j]);
         }
 
         // Deal stack
@@ -42,4 +42,42 @@ void RussianBankField::deal(const int seed) {
     }
 
     return;
+}
+
+
+boost::python::list RussianBankField::stack_to_list(const Stack& stack) const {
+    boost::python::object get_iter = boost::python::iterator<Stack>();
+    boost::python::object iter = get_iter(stack);
+    boost::python::list l(iter);
+    return l;
+}
+
+
+Card RussianBankField::getBanks(const int i, const int j) const {
+    return banks_[i][j];
+}
+
+
+boost::python::list RussianBankField::getTableau(const int i) const {
+    return stack_to_list(tableau_[i]);
+}
+
+
+boost::python::list RussianBankField::getHiddenStocks(const int i) const {
+    return stack_to_list(hidden_stocks_[i]);
+}
+
+
+boost::python::list RussianBankField::getExposedStocks(const int i) const {
+    return stack_to_list(exposed_stocks_[i]);
+}
+
+
+boost::python::list RussianBankField::getHands(const int i) const {
+    return stack_to_list(hands_[i]);
+}
+
+
+boost::python::list RussianBankField::getWastes(const int i) const {
+    return stack_to_list(wastes_[i]);
 }

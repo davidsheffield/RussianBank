@@ -2,6 +2,7 @@
 #define RUSSIANBANKFIELD_h
 
 #include <algorithm>
+#include <boost/python.hpp>
 #include <iostream>
 
 #include "Card.h"
@@ -11,6 +12,12 @@ class RussianBankField
 public:
     RussianBankField(const int);
     ~RussianBankField();
+    Card getBanks(const int, const int) const;
+    boost::python::list getTableau(const int) const;
+    boost::python::list getHiddenStocks(const int) const;
+    boost::python::list getExposedStocks(const int) const;
+    boost::python::list getHands(const int) const;
+    boost::python::list getWastes(const int) const;
 private:
     Card banks_[4][2];
     Stack tableau_[8];
@@ -20,23 +27,31 @@ private:
     Stack wastes_[2];
 
     void deal(const int);
+    boost::python::list stack_to_list(const Stack&) const;
 };
 
 
-#include <boost/python.hpp>
-using namespace boost::python;
-
 BOOST_PYTHON_MODULE(russianbank)
 {
-    class_<RussianBankField>("RussianBankField", init<int>());
-    class_<Card>("Card")
-        .def(init<int, int, bool>())
+    boost::python::class_<RussianBankField>("RussianBankField",
+                                            boost::python::init<int>())
+        .def("getBanks", &RussianBankField::getBanks)
+        .def("getTableau", &RussianBankField::getTableau)
+        .def("getHiddenStocks", &RussianBankField::getHiddenStocks)
+        .def("getExposedStocks", &RussianBankField::getExposedStocks)
+        .def("getHands", &RussianBankField::getHands)
+        .def("getWastes", &RussianBankField::getWastes)
+        ;
+    boost::python::class_<Card>("Card")
+        .def(boost::python::init<int, int, bool>())
         .def("getRank", &Card::getRank)
         .def("getColor", &Card::getColor)
         .def("getSuit", &Card::getSuit)
         .def("getDeck", &Card::getDeck)
         .def("getCard", &Card::getCard)
+        .def("isEmpty", &Card::isEmpty)
         ;
+    boost::python::class_<Stack>("Stack");
 }
 
 #endif
