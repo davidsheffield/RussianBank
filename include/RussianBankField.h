@@ -50,6 +50,7 @@ BOOST_PYTHON_MODULE(russianbank)
         .def("getDeck", &Card::getDeck)
         .def("getCard", &Card::getCard)
         .def("isEmpty", &Card::isEmpty)
+        .def("notEmpty", &Card::notEmpty)
         ;
     boost::python::class_<Stack>("Stack");
 }

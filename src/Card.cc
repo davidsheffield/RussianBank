@@ -1,5 +1,7 @@
 #include "Card.h"
 
+using namespace std;
+
 
 Card::Card(): rank_(0), suit_(0), deck_(false) {}
 
@@ -32,11 +34,14 @@ int Card::getDeck() const {
 
 
 std::string Card::getCard() const {
-    using namespace std;
+    if (isEmpty())
+        return "  ";
     string card_string = "";
 
     if (rank_ == 1)
         card_string = "A";
+    else if (rank_ == 10)
+        card_string = "T";
     else if (rank_ == 11)
         card_string = "J";
     else if (rank_ == 12)
@@ -61,6 +66,11 @@ std::string Card::getCard() const {
 
 bool Card::isEmpty() const {
     return rank_ == 0;
+}
+
+
+bool Card::notEmpty() const {
+    return !isEmpty();
 }
 
 

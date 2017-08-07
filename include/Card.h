@@ -18,6 +18,7 @@ public:
     int getDeck() const;
     std::string getCard() const;
     bool isEmpty() const;
+    bool notEmpty() const;
     bool isPlayableTable(const Card) const;
     bool isPlayableOpponent(const Card) const;
     bool isPlayableBank(const Card) const;
