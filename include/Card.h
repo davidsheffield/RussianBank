@@ -2,11 +2,13 @@
 #define CARD_h
 
 #include <string>
+#include <vector>
 
 namespace RussianBank {
     class Card
     {
     public:
+        Card();
         Card(int, int, bool);
         ~Card();
 
@@ -20,10 +22,12 @@ namespace RussianBank {
         bool isPlayableBank(const Card) const;
 
     private:
-        const int rank_;
-        const int suit_;
-        const bool deck_;
+        int rank_;
+        int suit_;
+        bool deck_;
     };
+
+    typedef std::vector<Card> Stack;
 }
 
 #endif

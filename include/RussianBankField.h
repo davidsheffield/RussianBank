@@ -8,12 +8,16 @@
 class RussianBankField
 {
 public:
-    RussianBankField(double num);
-    void setNumber(double n);
-    double getNumber() const;
+    RussianBankField();
+    ~RussianBankField();
     void cardTest();
 private:
-    double num_;
+    RussianBank::Card banks_[4][2];
+    RussianBank::Stack tableau_[8];
+    RussianBank::Stack hidden_stocks_[2];
+    RussianBank::Stack exposed_stocks_[2];
+    RussianBank::Stack hands_[2];
+    RussianBank::Stack wastes_[2];
 };
 
 
@@ -22,9 +26,7 @@ using namespace boost::python;
 
 BOOST_PYTHON_MODULE(russianbankfield)
 {
-    class_<RussianBankField>("RussianBankField", init<double>())
-        .def("setNumber", &RussianBankField::setNumber)
-        .def("getNumber", &RussianBankField::getNumber)
+    class_<RussianBankField>("RussianBankField")
         .def("cardTest", &RussianBankField::cardTest)
         ;
 }

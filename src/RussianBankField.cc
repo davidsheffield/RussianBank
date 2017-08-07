@@ -1,19 +1,17 @@
 #include "RussianBankField.h"
 
-RussianBankField::RussianBankField(double num):
-    num_(num) {}
+using namespace RussianBank;
 
-void RussianBankField::setNumber(double n) {
-    num_ = n;
-    return;
+
+RussianBankField::RussianBankField() {
+    using namespace std;
 }
 
-double RussianBankField::getNumber() const {
-    return num_;
-}
+
+RussianBankField::~RussianBankField() {}
+
 
 void RussianBankField::cardTest() {
-    using namespace RussianBank;
     using namespace std;
 
     Card card1(1, 0, false);

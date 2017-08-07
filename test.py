@@ -4,13 +4,7 @@ import russianbankfield as rb
 
 
 def main():
-    field = rb.RussianBankField(1.0)
-    print(field.getNumber())
-
-    field.setNumber(2.0)
-    print(field.getNumber())
-
-    print("")
+    field = rb.RussianBankField()
 
     field.cardTest()
 

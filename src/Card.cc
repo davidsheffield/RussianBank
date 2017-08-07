@@ -1,25 +1,35 @@
 #include "Card.h"
 
+
+RussianBank::Card::Card(): rank_(0), suit_(0), deck_(false) {}
+
+
 RussianBank::Card::Card(int rank, int suit, bool deck):
     rank_(rank), suit_(suit), deck_(deck) {}
 
+
 RussianBank::Card::~Card(){}
+
 
 int RussianBank::Card::getRank() const {
     return rank_;
 }
 
+
 int RussianBank::Card::getColor() const {
     return suit_ & 1;
 }
+
 
 int RussianBank::Card::getSuit() const {
     return suit_;
 }
 
+
 int RussianBank::Card::getDeck() const {
     return deck_;
 }
+
 
 std::string RussianBank::Card::getCard() const {
     using namespace std;
@@ -48,6 +58,7 @@ std::string RussianBank::Card::getCard() const {
     return card_string;
 }
 
+
 bool RussianBank::Card::isPlayableTable(const RussianBank::Card other_card)
     const {
     if (((suit_ ^ other_card.getSuit()) & 1)
@@ -56,6 +67,7 @@ bool RussianBank::Card::isPlayableTable(const RussianBank::Card other_card)
     else
         return false;
 }
+
 
 bool RussianBank::Card::isPlayableOpponent(const RussianBank::Card other_card)
     const {
@@ -66,6 +78,7 @@ bool RussianBank::Card::isPlayableOpponent(const RussianBank::Card other_card)
     else
         return false;
 }
+
 
 bool RussianBank::Card::isPlayableBank(const RussianBank::Card other_card)
     const {
