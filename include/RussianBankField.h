@@ -1,6 +1,7 @@
 #ifndef RUSSIANBANKFIELD_h
 #define RUSSIANBANKFIELD_h
 
+#include <algorithm>
 #include <iostream>
 
 #include "Card.h"
@@ -8,7 +9,7 @@
 class RussianBankField
 {
 public:
-    RussianBankField();
+    RussianBankField(const int);
     ~RussianBankField();
     void cardTest();
 private:
@@ -18,6 +19,8 @@ private:
     RussianBank::Stack exposed_stocks_[2];
     RussianBank::Stack hands_[2];
     RussianBank::Stack wastes_[2];
+
+    void deal(const int);
 };
 
 
@@ -26,7 +29,7 @@ using namespace boost::python;
 
 BOOST_PYTHON_MODULE(russianbankfield)
 {
-    class_<RussianBankField>("RussianBankField")
+    class_<RussianBankField>("RussianBankField", init<int>())
         .def("cardTest", &RussianBankField::cardTest)
         ;
 }

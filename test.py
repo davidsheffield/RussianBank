@@ -4,7 +4,7 @@ import russianbankfield as rb
 
 
 def main():
-    field = rb.RussianBankField()
+    field = rb.RussianBankField(0)
 
     field.cardTest()
 
