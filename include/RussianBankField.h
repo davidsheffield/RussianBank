@@ -27,10 +27,18 @@ private:
 #include <boost/python.hpp>
 using namespace boost::python;
 
-BOOST_PYTHON_MODULE(russianbankfield)
+BOOST_PYTHON_MODULE(russianbank)
 {
     class_<RussianBankField>("RussianBankField", init<int>())
         .def("cardTest", &RussianBankField::cardTest)
+        ;
+    class_<RussianBank::Card>("Card")
+        .def(init<int, int, bool>())
+        .def("getRank", &RussianBank::Card::getRank)
+        .def("getColor", &RussianBank::Card::getColor)
+        .def("getSuit", &RussianBank::Card::getSuit)
+        .def("getDeck", &RussianBank::Card::getDeck)
+        .def("getCard", &RussianBank::Card::getCard)
         ;
 }
 

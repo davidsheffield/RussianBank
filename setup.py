@@ -5,7 +5,7 @@ from distutils.extension import Extension
 
 setup(name="PackageName",
       ext_modules=[
-          Extension("russianbankfield",
+          Extension("russianbank",
                     ["src/RussianBankField.cc", "src/Card.cc"],
                     include_dirs=['include'],
                     libraries = ["boost_python3"],
