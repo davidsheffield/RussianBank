@@ -20,6 +20,9 @@ public:
     boost::python::list getHands(const int) const;
     boost::python::list getWastes(const int) const;
     int moveCard(const int, const int, const int);
+
+    bool operator==(const RussianBankField&) const;
+    bool operator!=(const RussianBankField&) const;
 private:
     Card banks_[4][2];
     Stack tableau_[8];
@@ -48,6 +51,8 @@ BOOST_PYTHON_MODULE(russianbank)
         .def("getHands", &RussianBankField::getHands)
         .def("getWastes", &RussianBankField::getWastes)
         .def("moveCard", &RussianBankField::moveCard)
+        .def("__eq__", &RussianBankField::operator==)
+        .def("__ne__", &RussianBankField::operator!=)
         ;
     boost::python::class_<Card>("Card")
         .def(boost::python::init<int, int, bool>())
@@ -58,6 +63,10 @@ BOOST_PYTHON_MODULE(russianbank)
         .def("getCard", &Card::getCard)
         .def("isEmpty", &Card::isEmpty)
         .def("notEmpty", &Card::notEmpty)
+        .def("isSame", &Card::isSame)
+        .def("notSame", &Card::notSame)
+        .def("__eq__", &Card::operator==)
+        .def("__ne__", &Card::operator!=)
         ;
     boost::python::class_<Stack>("Stack");
 }

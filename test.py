@@ -56,6 +56,11 @@ def testDeal():
             good_deal = False
             print("After deal, player {0}'s waste pile has {1} cards.".format(
                 i, len(stack)))
+
+    if field == rb.RussianBankField(3):
+        good_deal = False
+        print("Shuffling is not working.")
+
     if good_deal:
         print("RussianBankField passes deal check.")
         display(field, 2)
@@ -65,8 +70,8 @@ def testMove():
     field = rb.RussianBankField(3)
     good_move = True
     if field.moveCard(14, 18, 0) != 0:
-        print("Not able to move cards in tableau.")
         good_move = False
+        print("Not able to move cards in tableau.")
     if good_move:
         print("RussianBankField passes move check.")
 

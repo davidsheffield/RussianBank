@@ -74,8 +74,7 @@ bool Card::notEmpty() const {
 }
 
 
-bool Card::isPlayableTable(const Card other_card)
-    const {
+bool Card::isPlayableTable(const Card other_card) const {
     if (((suit_ ^ other_card.getSuit()) & 1)
         && (rank_ + 1 == other_card.getRank()))
         return true;
@@ -84,8 +83,7 @@ bool Card::isPlayableTable(const Card other_card)
 }
 
 
-bool Card::isPlayableOpponent(const Card other_card)
-    const {
+bool Card::isPlayableOpponent(const Card other_card) const {
     if ((suit_ == other_card.getSuit())
         && ((rank_ + 1 == other_card.getRank())
             || (rank_ - 1 == other_card.getRank())))
@@ -95,11 +93,33 @@ bool Card::isPlayableOpponent(const Card other_card)
 }
 
 
-bool Card::isPlayableBank(const Card other_card)
-    const {
+bool Card::isPlayableBank(const Card other_card) const {
     if ((suit_ == other_card.getSuit())
         && (rank_ - 1 == other_card.getRank()))
         return true;
     else
         return false;
+}
+
+
+bool Card::isSame(const Card &other) const {
+    return ((rank_ == other.getRank())
+            && (suit_ == other.getSuit()));
+}
+
+
+bool Card::notSame(const Card &other) const {
+    return !isSame(other);
+}
+
+
+bool Card::operator==(const Card &rhs) const {
+    return ((rank_ == rhs.getRank())
+            && (suit_ == rhs.getSuit())
+            && (deck_ == rhs.getDeck()));
+}
+
+
+bool Card::operator!=(const Card &rhs) const {
+    return !(*this == rhs);
 }

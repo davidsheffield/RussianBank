@@ -22,7 +22,10 @@ public:
     bool isPlayableTable(const Card) const;
     bool isPlayableOpponent(const Card) const;
     bool isPlayableBank(const Card) const;
-
+    bool isSame(const Card&) const;
+    bool notSame(const Card&) const;
+    bool operator==(const Card&) const;
+    bool operator!=(const Card&) const;
 private:
     int rank_;
     int suit_;

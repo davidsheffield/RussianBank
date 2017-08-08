@@ -162,3 +162,30 @@ int RussianBankField::moveCard(const int initial, const int final,
     }
     return 5;
 }
+
+
+bool RussianBankField::operator==(const RussianBankField &rhs) const {
+    for (int i=0; i<4; ++i) {
+        for (int j=0; j<2; ++j) {
+            if (banks_[i][j] != getBanks(i, j))
+                return false;
+        }
+    }
+    for (int i=0; i<8; ++i) {
+        if (tableau_[i] != getTableau(i))
+            return false;
+    }
+    for (int i=0; i<2; ++i) {
+        if ((hidden_stocks_[i] != getHiddenStocks(i))
+            || (exposed_stocks_[i] != getExposedStocks(i))
+            || (hands_[i] != getHands(i))
+            || (wastes_[i] != getWastes(i)))
+            return false;
+    }
+    return true;
+}
+
+
+bool RussianBankField::operator!=(const RussianBankField &rhs) const {
+    return !(*this == rhs);
+}
