@@ -20,7 +20,8 @@ public:
     boost::python::list getHands(const int) const;
     boost::python::list getWastes(const int) const;
     int moveCard(const int, const int, const int);
-
+    int exposeStockCard(const int);
+    int discard(const int);
     bool operator==(const RussianBankField&) const;
     bool operator!=(const RussianBankField&) const;
 private:
@@ -36,7 +37,9 @@ private:
     Card getTopCard(const int, const int);
     Card getStockCard(const int);
     Card getHandCard(const int);
+    Card getWasteCard(const int);
     Card getTableauCard(const int);
+    void popCard(const int, const int);
 };
 
 
@@ -51,6 +54,8 @@ BOOST_PYTHON_MODULE(russianbank)
         .def("getHands", &RussianBankField::getHands)
         .def("getWastes", &RussianBankField::getWastes)
         .def("moveCard", &RussianBankField::moveCard)
+        .def("exposeStockCard", &RussianBankField::exposeStockCard)
+        .def("discard", &RussianBankField::discard)
         .def("__eq__", &RussianBankField::operator==)
         .def("__ne__", &RussianBankField::operator!=)
         ;

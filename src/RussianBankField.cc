@@ -85,8 +85,8 @@ boost::python::list RussianBankField::getWastes(const int i) const {
 Card RussianBankField::getStockCard(const int player) {
     if (exposed_stocks_[player].size() > 0)
         return exposed_stocks_[player].back();
-    else if (hidden_stocks_[player].size() > 0)
-        return hidden_stocks_[player].back();
+    // else if (hidden_stocks_[player].size() > 0)
+    //     return hidden_stocks_[player].back();
     else
         return Card();
 }
@@ -95,6 +95,14 @@ Card RussianBankField::getStockCard(const int player) {
 Card RussianBankField::getHandCard(const int player) {
     if (hands_[player].size() > 0)
         return hands_[player].back();
+    else
+        return Card();
+}
+
+
+Card RussianBankField::getWasteCard(const int player) {
+    if (wastes_[player].size() > 0)
+        return wastes_[player].back();
     else
         return Card();
 }
@@ -116,13 +124,28 @@ Card RussianBankField::getTopCard(const int position, const int player) {
     else if (position == 2)
         return getStockCard((player == 0) ? 1 : 0);
     else if (position == 3)
-        return getHandCard((player == 0) ? 1 : 0);
+        return getWasteCard((player == 0) ? 1 : 0);
     else if (position >= 4 && position <= 7)
         return banks_[position % 4][0];
     else if (position >= 8 && position <=11)
         return banks_[position % 4][1];
     else
         return getTableauCard(position - 12);
+}
+
+
+void RussianBankField::popCard(const int position, const int player) {
+    if (position == 0)
+        exposed_stocks_[player].pop_back();
+    else if (position == 1)
+        hands_[player].pop_back();
+    else if (position == 2)
+        exposed_stocks_[(player == 0) ? 1 : 0].pop_back();
+    else if (position == 3)
+        hands_[(player == 0) ? 1 : 0].pop_back();
+    else
+        tableau_[position - 12].pop_back();
+    return;
 }
 
 
@@ -143,24 +166,64 @@ int RussianBankField::moveCard(const int initial, const int final,
 
     Card final_card = getTopCard(final, player);
 
-    if (final <= 3) { // 0 and 1 already excluded
-        if ((initial_card.getSuit() == final_card.getSuit())
-            && ((initial_card.getRank() + 1 == final_card.getRank())
-                || (initial_card.getRank() - 1 == final_card.getRank()))) {
-            return 0;
-        }
-    } else if (final <= 11) {
-        if ((initial_card.getSuit() == final_card.getSuit())
-            && (initial_card.getRank() - 1 == final_card.getRank())) {
-            return 0;
-        }
-    } else {
-        if (((initial_card.getSuit() ^ final_card.getSuit()) & 1)
-            && (initial_card.getRank() + 1 == final_card.getRank())) {
-            return 0;
-        }
+    if ((final == 2)
+        && final_card.notEmpty()
+        && (initial_card.getSuit() == final_card.getSuit())
+        && ((initial_card.getRank() + 1 == final_card.getRank())
+            || (initial_card.getRank() - 1 == final_card.getRank()))) {
+        exposed_stocks_[(player == 0) ? 1 : 0].push_back(initial_card);
+        popCard(initial, player);
+        return 0;
+    } else if ((final == 3)
+               && final_card.notEmpty()
+               && (initial_card.getSuit() == final_card.getSuit())
+               && ((initial_card.getRank() + 1 == final_card.getRank())
+                   || (initial_card.getRank() - 1 == final_card.getRank()))) {
+        wastes_[(player == 0) ? 1 : 0].push_back(initial_card);
+        popCard(initial, player);
+        return 0;
+    } else if ((final <= 7)
+               && (((initial_card.getSuit() == final_card.getSuit())
+                   && (initial_card.getRank() - 1 == final_card.getRank()))
+                   || final_card.isEmpty())) {
+        banks_[final % 4][0] = initial_card;
+        popCard(initial, player);
+        return 0;
+    } else if ((final <= 11)
+               && (((initial_card.getSuit() == final_card.getSuit())
+                   && (initial_card.getRank() - 1 == final_card.getRank()))
+                   || final_card.isEmpty())) {
+        banks_[final % 4][1] = initial_card;
+        popCard(initial, player);
+        return 0;
+    } else if ((((initial_card.getSuit() ^ final_card.getSuit()) & 1)
+                && (initial_card.getRank() + 1 == final_card.getRank()))
+               || final_card.isEmpty()) {
+        tableau_[final - 12].push_back(initial_card);
+        popCard(initial, player);
+        return 0;
     }
     return 5;
+}
+
+
+int RussianBankField::exposeStockCard(const int player) {
+    if (exposed_stocks_[player].size() > 0)
+        return 1;
+    if (hidden_stocks_[player].size() == 0)
+        return 2;
+    exposed_stocks_[player].push_back(hidden_stocks_[player].back());
+    hidden_stocks_[player].pop_back();
+    return 0;
+}
+
+
+int RussianBankField::discard(const int player) {
+    if (hands_[player].size() == 0)
+        return 1;
+    wastes_[player].push_back(hands_[player].back());
+    hands_[player].pop_back();
+    return 0;
 }
 
 
