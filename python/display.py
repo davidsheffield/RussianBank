@@ -35,11 +35,11 @@ def printPlayer(field, player, hand_in_hand):
     if player == 0:
         # sys.stdout.write('\r')
         # sys.stdout.flush()
-        left_card = hand_card
-        right_card = stock_card
-    else:
         left_card = stock_card
         right_card = hand_card
+    else:
+        left_card = hand_card
+        right_card = stock_card
     print("                                  {2}    {1}     {0}".format(left_card, waste_card, right_card))
 
 
@@ -69,12 +69,15 @@ def printTableau(field):
         print(cards)
 
 
-def display(field):
-    printPlayer(field, 1, True)
+def display(field, state):
+    # state: 0 = Player 0's top hand card is displayed
+    #        1 = Player 1's top hand card is displayed
+    #        2 = No hand cards are displayed
+    printPlayer(field, 1, state == 1)
     print("")
     printTableau(field)
     print("")
-    printPlayer(field, 0, False)
+    printPlayer(field, 0, state == 0)
 
 
 def main():

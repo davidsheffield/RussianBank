@@ -58,13 +58,17 @@ def testDeal():
                 i, len(stack)))
     if good_deal:
         print("RussianBankField passes deal check.")
-        display(field)
+        display(field, 2)
 
 
 def testMove():
     field = rb.RussianBankField(3)
+    good_move = True
     if field.moveCard(14, 18, 0) != 0:
         print("Not able to move cards in tableau.")
+        good_move = False
+    if good_move:
+        print("RussianBankField passes move check.")
 
 
 def main():
