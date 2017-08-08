@@ -1,10 +1,12 @@
 import sys
 sys.path.append('build/lib.macosx-10.7-x86_64-3.6/')
 import russianbank as rb
+sys.path.append('python/')
+from display import *
 
 
-def main():
-    field = rb.RussianBankField(0)
+def testDeal():
+    field = rb.RussianBankField(1)
 
     good_deal = True
     for i in range(4):
@@ -56,6 +58,18 @@ def main():
                 i, len(stack)))
     if good_deal:
         print("RussianBankField passes deal check.")
+        display(field)
+
+
+def testMove():
+    field = rb.RussianBankField(3)
+    if field.moveCard(14, 18, 0) != 0:
+        print("Not able to move cards in tableau.")
+
+
+def main():
+    testDeal()
+    testMove()
 
 
 if __name__ == '__main__':

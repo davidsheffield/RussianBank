@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <boost/python.hpp>
 #include <iostream>
+#include <random>
 
 #include "Card.h"
 
@@ -18,6 +19,7 @@ public:
     boost::python::list getExposedStocks(const int) const;
     boost::python::list getHands(const int) const;
     boost::python::list getWastes(const int) const;
+    int moveCard(const int, const int, const int);
 private:
     Card banks_[4][2];
     Stack tableau_[8];
@@ -28,6 +30,10 @@ private:
 
     void deal(const int);
     boost::python::list stack_to_list(const Stack&) const;
+    Card getTopCard(const int, const int);
+    Card getStockCard(const int);
+    Card getHandCard(const int);
+    Card getTableauCard(const int);
 };
 
 
@@ -41,6 +47,7 @@ BOOST_PYTHON_MODULE(russianbank)
         .def("getExposedStocks", &RussianBankField::getExposedStocks)
         .def("getHands", &RussianBankField::getHands)
         .def("getWastes", &RussianBankField::getWastes)
+        .def("moveCard", &RussianBankField::moveCard)
         ;
     boost::python::class_<Card>("Card")
         .def(boost::python::init<int, int, bool>())
