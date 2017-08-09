@@ -1,13 +1,21 @@
 import sys
+from termcolor import colored
 sys.path.append('build/lib.macosx-10.7-x86_64-3.6/')
 import russianbank as rb
 
 
 def cardBack(card):
     if card.getDeck():
-        return "WW"
+        return colored("WW", "magenta")
     else:
-        return "XX"
+        return colored("XX", "blue")
+
+
+def cardFront(card):
+    if card.getSuit() % 2 == 0:
+        return colored(card.getCard(), "red")
+    else:
+        return card.getCard()
 
 
 def printPlayer(field, player, hand_in_hand):
@@ -15,20 +23,20 @@ def printPlayer(field, player, hand_in_hand):
     exposed_stock = field.getExposedStocks(player)
     hidden_stock = field.getHiddenStocks(player)
     if len(exposed_stock) > 0:
-        stock_card = exposed_stock[-1].getCard()
+        stock_card = cardFront(exposed_stock[-1])
     elif len(hidden_stock) > 0:
         stock_card = cardBack(hidden_stock[-1])
 
     waste_card = "  "
     waste = field.getWastes(player)
     if len(waste) > 0:
-        waste_card = waste[-1].getCard()
+        waste_card = cardFront(waste[-1])
 
     hand_card = "  "
     hand = field.getHands(player)
     if len(hand) > 0:
         if hand_in_hand:
-            hand_card = hand[-1].getCard()
+            hand_card = cardFront(hand[-1])
         else:
             hand_card = cardBack(hand[-1])
 
@@ -45,7 +53,7 @@ def printPlayer(field, player, hand_in_hand):
 
 def bankCard(card):
     if card.getRank() < 13:
-        return card.getCard()
+        return cardFront(card)
     else:
         return cardBack(card)
 
@@ -58,13 +66,13 @@ def printTableau(field):
         for j in range(12 - len(stack)):
             cards += "   "
         for card in reversed(stack):
-            cards += " {0}".format(card.getCard())
+            cards += " {0}".format(cardFront(card))
 
         cards += "   {0} {1}  ".format(bankCard(field.getBanks(i, 0)),
                                         bankCard(field.getBanks(i, 1)))
 
         for card in field.getTableau(i):
-            cards += " {0}".format(card.getCard())
+            cards += " {0}".format(cardFront(card))
 
         print(cards)
 
