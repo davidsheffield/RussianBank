@@ -166,42 +166,48 @@ int RussianBankField::moveCard(const int initial, const int final,
 
     Card final_card = getTopCard(final, player);
 
-    if ((final == 2)
-        && final_card.notEmpty()
-        && (initial_card.getSuit() == final_card.getSuit())
-        && ((initial_card.getRank() + 1 == final_card.getRank())
-            || (initial_card.getRank() - 1 == final_card.getRank()))) {
-        exposed_stocks_[(player == 0) ? 1 : 0].push_back(initial_card);
-        popCard(initial, player);
-        return 0;
-    } else if ((final == 3)
-               && final_card.notEmpty()
-               && (initial_card.getSuit() == final_card.getSuit())
-               && ((initial_card.getRank() + 1 == final_card.getRank())
-                   || (initial_card.getRank() - 1 == final_card.getRank()))) {
-        wastes_[(player == 0) ? 1 : 0].push_back(initial_card);
-        popCard(initial, player);
-        return 0;
-    } else if ((final <= 7)
-               && (((initial_card.getSuit() == final_card.getSuit())
-                   && (initial_card.getRank() - 1 == final_card.getRank()))
-                   || final_card.isEmpty())) {
-        banks_[final % 4][0] = initial_card;
-        popCard(initial, player);
-        return 0;
-    } else if ((final <= 11)
-               && (((initial_card.getSuit() == final_card.getSuit())
-                   && (initial_card.getRank() - 1 == final_card.getRank()))
-                   || final_card.isEmpty())) {
-        banks_[final % 4][1] = initial_card;
-        popCard(initial, player);
-        return 0;
-    } else if ((((initial_card.getSuit() ^ final_card.getSuit()) & 1)
-                && (initial_card.getRank() + 1 == final_card.getRank()))
-               || final_card.isEmpty()) {
-        tableau_[final - 12].push_back(initial_card);
-        popCard(initial, player);
-        return 0;
+    if (final == 2) {
+        if (final_card.notEmpty()
+            && (initial_card.getSuit() == final_card.getSuit())
+            && ((initial_card.getRank() + 1 == final_card.getRank())
+                || (initial_card.getRank() - 1 == final_card.getRank()))) {
+            exposed_stocks_[(player == 0) ? 1 : 0].push_back(initial_card);
+            popCard(initial, player);
+            return 0;
+        }
+    } else if (final == 3) {
+        if (final_card.notEmpty()
+            && (initial_card.getSuit() == final_card.getSuit())
+            && ((initial_card.getRank() + 1 == final_card.getRank())
+                || (initial_card.getRank() - 1 == final_card.getRank()))) {
+            wastes_[(player == 0) ? 1 : 0].push_back(initial_card);
+            popCard(initial, player);
+            return 0;
+        }
+    } else if (final <= 7) {
+        if (((initial_card.getSuit() == final_card.getSuit())
+             && (initial_card.getRank() - 1 == final_card.getRank()))
+            || final_card.isEmpty()) {
+            banks_[final % 4][0] = initial_card;
+            popCard(initial, player);
+            return 0;
+        }
+    } else if (final <= 11) {
+        if (((initial_card.getSuit() == final_card.getSuit())
+             && (initial_card.getRank() - 1 == final_card.getRank()))
+            || final_card.isEmpty()) {
+            banks_[final % 4][1] = initial_card;
+            popCard(initial, player);
+            return 0;
+        }
+    } else {
+        if ((((initial_card.getSuit() ^ final_card.getSuit()) & 1)
+             && (initial_card.getRank() + 1 == final_card.getRank()))
+            || final_card.isEmpty()) {
+            tableau_[final - 12].push_back(initial_card);
+            popCard(initial, player);
+            return 0;
+        }
     }
     return 5;
 }
@@ -223,6 +229,18 @@ int RussianBankField::discard(const int player) {
         return 1;
     wastes_[player].push_back(hands_[player].back());
     hands_[player].pop_back();
+    return 0;
+}
+
+
+int RussianBankField::bigJosh(const int player) {
+    if (hands_[player].size() != 0)
+        return 1;
+    if (wastes_[player].size() == 0)
+        return 1;
+    reverse(wastes_[player].begin(), wastes_[player].end());
+    hands_[player] = wastes_[player];
+    wastes_[player].clear();
     return 0;
 }
 

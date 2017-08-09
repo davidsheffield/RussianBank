@@ -22,6 +22,7 @@ public:
     int moveCard(const int, const int, const int);
     int exposeStockCard(const int);
     int discard(const int);
+    int bigJosh(const int);
     bool operator==(const RussianBankField&) const;
     bool operator!=(const RussianBankField&) const;
 private:
@@ -56,6 +57,7 @@ BOOST_PYTHON_MODULE(russianbank)
         .def("moveCard", &RussianBankField::moveCard)
         .def("exposeStockCard", &RussianBankField::exposeStockCard)
         .def("discard", &RussianBankField::discard)
+        .def("bigJosh", &RussianBankField::bigJosh)
         .def("__eq__", &RussianBankField::operator==)
         .def("__ne__", &RussianBankField::operator!=)
         ;
@@ -72,6 +74,7 @@ BOOST_PYTHON_MODULE(russianbank)
         .def("notSame", &Card::notSame)
         .def("__eq__", &Card::operator==)
         .def("__ne__", &Card::operator!=)
+        .def("__repr__", &Card::getCard)
         ;
     boost::python::class_<Stack>("Stack");
 }

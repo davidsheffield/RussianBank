@@ -47,7 +47,7 @@ def bankCard(card):
     if card.getRank() < 13:
         return card.getCard()
     else:
-        return getBack(card)
+        return cardBack(card)
 
 
 def printTableau(field):
