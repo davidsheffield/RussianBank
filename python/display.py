@@ -18,7 +18,7 @@ def cardFront(card):
         return card.getCard()
 
 
-def printPlayer(field, player, hand_in_hand):
+def getPlayerString(field, player, hand_in_hand):
     stock_card = "  "
     exposed_stock = field.getExposedStocks(player)
     hidden_stock = field.getHiddenStocks(player)
@@ -48,7 +48,8 @@ def printPlayer(field, player, hand_in_hand):
     else:
         left_card = hand_card
         right_card = stock_card
-    print("                                  {2}    {1}     {0}".format(left_card, waste_card, right_card))
+    return "                                  {2}    {1}     {0}".format(
+        left_card, waste_card, right_card)
 
 
 def bankCard(card):
@@ -58,7 +59,8 @@ def bankCard(card):
         return cardBack(card)
 
 
-def printTableau(field):
+def getTableauString(field):
+    tableau_string = ""
     for i in range(4):
         cards = ""
 
@@ -71,21 +73,30 @@ def printTableau(field):
         cards += "   {0} {1}  ".format(bankCard(field.getBanks(i, 0)),
                                         bankCard(field.getBanks(i, 1)))
 
-        for card in field.getTableau(i):
+        stack = field.getTableau(i)
+        for card in stack:
             cards += " {0}".format(cardFront(card))
+        for j in range(12 - len(stack)):
+            cards += "   "
 
-        print(cards)
+        tableau_string += cards + "\n"
+    return tableau_string
+
+
+def getDisplayString(field, state):
+    display_string = getPlayerString(field, 1, state == 1)
+    display_string += "\n\n"
+    display_string += getTableauString(field)
+    display_string += "\n"
+    display_string += getPlayerString(field, 0, state == 0)
+    return display_string
 
 
 def display(field, state):
     # state: 0 = Player 0's top hand card is displayed
     #        1 = Player 1's top hand card is displayed
     #        2 = No hand cards are displayed
-    printPlayer(field, 1, state == 1)
-    print("")
-    printTableau(field)
-    print("")
-    printPlayer(field, 0, state == 0)
+    print(getDisplayString(field, state))
 
 
 def main():

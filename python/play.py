@@ -3,19 +3,14 @@ import sys
 sys.path.append('build/lib.macosx-10.7-x86_64-3.6/')
 import russianbank as rb
 sys.path.append('python/')
-from display import *
+from display import getDisplayString
 
 
-def exampleGame():
-
-    field.moveCard(19, 15, 0)
-    field.exposeStockCard(0)
-    field.moveCard(0, 19, 0)
-    field.exposeStockCard(0)
-    field.discard(0)
-
-
-    display(field, 2)
+def exitGame():
+    print("\n" * 55)
+    sys.stdout.write('\x1b7\x1b[0;0f')
+    sys.stdout.flush()
+    sys.exit()
 
 
 def checkGameDone(field):
@@ -26,20 +21,36 @@ def checkGameDone(field):
                      + len(field.getHands(player_)) \
                      + len(field.getWastes(player_)))
     if total[0] == 0:
-        print("Player 0 wins with {0} points!".format(30 + total[1]))
-        sys.exit()
+        printMoveError("Player 0 wins with {0} points!".format(30 + total[1]))
+        input()
+        exitGame()
     elif total[1] == 0:
-        print("Player 1 wins with {0} points!".format(30 + total[0]))
-        sys.exit()
+        printMoveError("Player 1 wins with {0} points!".format(30 + total[0]))
+        input()
+        exitGame()
+
+
+def printMoveError(text):
+    sys.stdout.write("\x1b7\x1b[16;0f{0}".format(text))
+    sys.stdout.flush()
+
+
+def display(field, player):
+    sys.stdout.write('\x1b7\x1b[5;0f{0}'.format(
+        getDisplayString(field, player)))
+    sys.stdout.flush()
 
 
 def getMove(field, player, is_shown):
-    # Need to require hand moves after 1
-    response = input("Player {0} move: ".format(player))
+    sys.stdout.write("\x1b7\x1b[15;0f")
+    sys.stdout.flush()
+    response = input("Player {0}: ".format(player))
+    sys.stdout.write("\x1b7\x1b[15;0f                                        \n                                        ")
+    sys.stdout.flush()
     split = response.split(" ")
     if response == "0":
         if is_shown:
-            print("Must move hand card.")
+            printMoveError("Must move hand card.")
             return False, player, True
         error = field.exposeStockCard(player)
         if error == 0:
@@ -48,13 +59,13 @@ def getMove(field, player, is_shown):
             return False, player, False
     elif response == "1":
         if len(field.getHands(player)) == 0:
-            print("Big Josh")
+            printMoveError("Big Josh")
             field.bigJosh(player)
         display(field, player)
         return False, player, True
     elif response == "end":
         if not is_shown:
-            print("Turn over hand card frist.")
+            printMoveError("Turn over hand card frist.")
             return False, player, False
         field.discard(player)
         if player == 0:
@@ -63,28 +74,28 @@ def getMove(field, player, is_shown):
             player = 0
         return True, player, False
     elif response == "q" or response == "quit" or response == "exit":
-        sys.exit()
+        exitGame()
     elif response == "show":
         for player_ in [1, 0]:
-            print("On player {0}'s stock: {1}".format(
+            printMoveError("On player {0}'s stock: {1}".format(
                 player_, field.getExposedStocks(player_)))
         return False, player, is_shown
     elif len(split) != 2:
-        print("Invalid move")
+        printMoveError("Invalid move")
         return False, player, is_shown
     else:
         if split[0].isdigit() and split[1].isdigit():
             if is_shown and split[0] != "1":
-                print("Must move hand card.")
+                printMoveError("Must move hand card.")
                 return False, player, True
             error = field.moveCard(int(split[0]), int(split[1]), player)
             if error == 0:
                 return True, player, False
             else:
-                print("Invalid move")
+                printMoveError("Invalid move")
                 return False, player, is_shown
         else:
-            print("Invalid move")
+            printMoveError("Invalid move")
             return False, player, is_shown
 
 
@@ -95,6 +106,8 @@ def main():
     player = 0
     if random.random() < 0.5:
         player = 1
+
+    print("\n" * 55)
 
     is_shown = False
     while True:
