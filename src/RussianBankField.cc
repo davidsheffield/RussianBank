@@ -85,8 +85,14 @@ boost::python::list RussianBankField::getWastes(const int i) const {
 Card RussianBankField::getStockCard(const int player) {
     if (exposed_stocks_[player].size() > 0)
         return exposed_stocks_[player].back();
-    // else if (hidden_stocks_[player].size() > 0)
-    //     return hidden_stocks_[player].back();
+    else
+        return Card();
+}
+
+
+Card RussianBankField::getHiddenStockCard(const int player) {
+    if (hidden_stocks_[player].size() > 0)
+        return hidden_stocks_[player].back();
     else
         return Card();
 }
@@ -129,8 +135,16 @@ Card RussianBankField::getTopCard(const int position, const int player) {
         return banks_[position % 4][0];
     else if (position >= 8 && position <=11)
         return banks_[position % 4][1];
-    else
+    else if (position <= 19)
         return getTableauCard(position - 12);
+    else if (position == 20)
+        return getHiddenStockCard(player);
+    else if (position == 21)
+        return getWasteCard(player);
+    else if (position == 22)
+        return getHiddenStockCard((player == 0) ? 1 : 0);
+    else
+        return getHandCard((player == 0) ? 1 : 0);
 }
 
 
@@ -143,9 +157,52 @@ void RussianBankField::popCard(const int position, const int player) {
         exposed_stocks_[(player == 0) ? 1 : 0].pop_back();
     else if (position == 3)
         hands_[(player == 0) ? 1 : 0].pop_back();
-    else
+    else if (position <= 7)
+        banks_[position % 4][0] = Card(banks_[position % 4][0].getRank() - 1,
+                                       banks_[position % 4][0].getSuit(),
+                                       banks_[position % 4][0].getDeck());
+    else if (position <= 11)
+        banks_[position % 4][1] = Card(banks_[position % 4][1].getRank() - 1,
+                                       banks_[position % 4][1].getSuit(),
+                                       banks_[position % 4][1].getDeck());
+    else if (position <= 19)
         tableau_[position - 12].pop_back();
+    else if (position == 20)
+        hidden_stocks_[player].pop_back();
+    else if (position == 21)
+        wastes_[player].pop_back();
+    else if (position == 22)
+        hidden_stocks_[(player == 0) ? 1 : 0].pop_back();
+    else
+        hands_[(player == 0) ? 1 : 0].pop_back();
     return;
+}
+
+
+void RussianBankField::pushCard(const int position, const int player,
+                                const Card card) {
+    if (position == 0)
+        exposed_stocks_[player].push_back(card);
+    else if (position == 1)
+        hands_[player].push_back(card);
+    else if (position == 2)
+        exposed_stocks_[(player == 0) ? 1 : 0].push_back(card);
+    else if (position == 3)
+        wastes_[(player == 0) ? 1 : 0].push_back(card);
+    else if (position <= 7)
+        banks_[position % 4][0] = card;
+    else if (position <= 11)
+        banks_[position % 4][1] = card;
+    else if (position <= 19)
+        tableau_[position - 12].push_back(card);
+    else if (position == 20)
+        hidden_stocks_[player].push_back(card);
+    else if (position == 21)
+        wastes_[player].push_back(card);
+    else if (position == 22)
+        hidden_stocks_[(player == 0) ? 1 : 0].push_back(card);
+    else
+        hands_[(player == 0) ? 1 : 0].push_back(card);
 }
 
 
@@ -213,6 +270,26 @@ int RussianBankField::moveCard(const int initial, const int final,
 }
 
 
+int RussianBankField::moveCardForce(const int initial, const int final,
+                                    const int player) {
+    if (initial == final)
+        return 1;
+    if (initial < 0 || initial > 23 || final < 0 || final > 23)
+        return 2;
+
+    Card initial_card = getTopCard(initial, player);
+    if (initial_card.isEmpty())
+        return 4;
+
+    Card final_card = getTopCard(final, player);
+
+    pushCard(final, player, initial_card);
+    popCard(initial, player);
+
+    return 0;
+}
+
+
 int RussianBankField::exposeStockCard(const int player) {
     if (exposed_stocks_[player].size() > 0)
         return 1;
@@ -220,6 +297,15 @@ int RussianBankField::exposeStockCard(const int player) {
         return 2;
     exposed_stocks_[player].push_back(hidden_stocks_[player].back());
     hidden_stocks_[player].pop_back();
+    return 0;
+}
+
+
+int RussianBankField::hideStockCard(const int player) {
+    if (exposed_stocks_[player].size() != 1)
+        return 1;
+    hidden_stocks_[player].push_back(exposed_stocks_[player].back());
+    exposed_stocks_[player].pop_back();
     return 0;
 }
 
@@ -241,6 +327,29 @@ int RussianBankField::bigJosh(const int player) {
     reverse(wastes_[player].begin(), wastes_[player].end());
     hands_[player] = wastes_[player];
     wastes_[player].clear();
+    return 0;
+}
+
+
+int RussianBankField::popCardSafe(const int position, const int player) {
+    if (position < 0 || position > 23)
+        return 2;
+
+    Card card = getTopCard(position, player);
+    if (card.isEmpty())
+        return 4;
+
+    popCard(position, player);
+    return 0;
+}
+
+
+int RussianBankField::pushCardSafe(const int position, const int player,
+                                   const Card card) {
+    if (position < 0 || position > 23)
+        return 2;
+
+    pushCard(position, player, card);
     return 0;
 }
 

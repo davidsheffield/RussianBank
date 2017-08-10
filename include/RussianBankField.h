@@ -20,9 +20,13 @@ public:
     boost::python::list getHands(const int) const;
     boost::python::list getWastes(const int) const;
     int moveCard(const int, const int, const int);
+    int moveCardForce(const int, const int, const int);
     int exposeStockCard(const int);
+    int hideStockCard(const int);
     int discard(const int);
     int bigJosh(const int);
+    int popCardSafe(const int, const int);
+    int pushCardSafe(const int, const int, const Card);
     bool operator==(const RussianBankField&) const;
     bool operator!=(const RussianBankField&) const;
 private:
@@ -37,10 +41,12 @@ private:
     boost::python::list stack_to_list(const Stack&) const;
     Card getTopCard(const int, const int);
     Card getStockCard(const int);
+    Card getHiddenStockCard(const int);
     Card getHandCard(const int);
     Card getWasteCard(const int);
     Card getTableauCard(const int);
     void popCard(const int, const int);
+    void pushCard(const int, const int, const Card);
 };
 
 
@@ -55,9 +61,13 @@ BOOST_PYTHON_MODULE(russianbank)
         .def("getHands", &RussianBankField::getHands)
         .def("getWastes", &RussianBankField::getWastes)
         .def("moveCard", &RussianBankField::moveCard)
+        .def("moveCardForce", &RussianBankField::moveCardForce)
         .def("exposeStockCard", &RussianBankField::exposeStockCard)
+        .def("hideStockCard", &RussianBankField::hideStockCard)
         .def("discard", &RussianBankField::discard)
         .def("bigJosh", &RussianBankField::bigJosh)
+        .def("popCard", &RussianBankField::popCardSafe)
+        .def("pushCard", &RussianBankField::pushCardSafe)
         .def("__eq__", &RussianBankField::operator==)
         .def("__ne__", &RussianBankField::operator!=)
         ;
