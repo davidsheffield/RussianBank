@@ -82,6 +82,31 @@ boost::python::list RussianBankField::getWastes(const int i) const {
 }
 
 
+Stack RussianBankField::getTableauStack(const int i) const {
+    return tableau_[i];
+}
+
+
+Stack RussianBankField::getHiddenStocksStack(const int i) const {
+    return hidden_stocks_[i];
+}
+
+
+Stack RussianBankField::getExposedStocksStack(const int i) const {
+    return exposed_stocks_[i];
+}
+
+
+Stack RussianBankField::getHandsStack(const int i) const {
+    return hands_[i];
+}
+
+
+Stack RussianBankField::getWastesStack(const int i) const {
+    return wastes_[i];
+}
+
+
 Card RussianBankField::getStockCard(const int player) {
     if (exposed_stocks_[player].size() > 0)
         return exposed_stocks_[player].back();

@@ -5,6 +5,7 @@
 
 #include "Card.h"
 #include "RussianBankField.h"
+#include "RussianBankPlayer.h"
 
 
 BOOST_PYTHON_MODULE(russianbank)
@@ -44,6 +45,13 @@ BOOST_PYTHON_MODULE(russianbank)
         .def("__repr__", &Card::getCard)
         ;
     boost::python::class_<Stack>("Stack");
+    boost::python::class_<RussianBankPlayer>("RussianBankPlayer",
+                                             boost::python::init<RussianBankField>())
+        .def("startTurn", &RussianBankPlayer::startTurn)
+        .def("move", &RussianBankPlayer::move)
+        .def("getField", &RussianBankPlayer::getField)
+        .def("end", &RussianBankPlayer::end)
+        ;
 }
 
 #endif

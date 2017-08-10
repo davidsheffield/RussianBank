@@ -19,6 +19,11 @@ public:
     boost::python::list getExposedStocks(const int) const;
     boost::python::list getHands(const int) const;
     boost::python::list getWastes(const int) const;
+    Stack getTableauStack(const int) const;
+    Stack getHiddenStocksStack(const int) const;
+    Stack getExposedStocksStack(const int) const;
+    Stack getHandsStack(const int) const;
+    Stack getWastesStack(const int) const;
     int moveCard(const int, const int, const int);
     int moveCardForce(const int, const int, const int);
     int exposeStockCard(const int);

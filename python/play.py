@@ -113,6 +113,17 @@ def main():
     if random.random() < 0.5:
         player = 1
 
+    single_player = False
+    while True:
+        value = input("How many players? (1 or 2) ")
+        if value == "1":
+            single_player = True
+            break
+        elif value == "2":
+            break
+        else:
+            print("Invalid input")
+
     print("\n" * 55)
 
     is_shown = False
@@ -121,10 +132,23 @@ def main():
 
         display(field, 2)
 
-        while True:
-            value, player, is_shown = getMove(field, player, is_shown)
-            if value:
-                break
+        if not single_player or player == 0:
+            while True:
+                value, player, is_shown = getMove(field, player, is_shown)
+                if value:
+                    break
+        else:
+            robot = rb.RussianBankPlayer(field)
+            value = robot.move()
+            field = robot.getField()
+            display(field, 2)
+            sys.stdout.write("\x1b7\x1b[15;0f")
+            sys.stdout.flush()
+            input("Player 1's move: {0}".format(value))
+            sys.stdout.write("\x1b7\x1b[15;0f                                        ")
+            sys.stdout.flush()
+            if robot.end():
+                player = 0
 
 
 if __name__ == '__main__':

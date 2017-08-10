@@ -7,7 +7,7 @@ setup(name="PackageName",
       ext_modules=[
           Extension("russianbank",
                     ["src/RussianBank.cc", "src/RussianBankField.cc",
-                     "src/Card.cc"],
+                     "src/Card.cc", "src/RussianBankPlayer.cc"],
                     include_dirs=['include'],
                     libraries = ["boost_python3"],
                     extra_compile_args=['-std=c++11','-stdlib=libc++'],
