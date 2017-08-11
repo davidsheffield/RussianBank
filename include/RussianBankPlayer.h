@@ -14,9 +14,12 @@ public:
     void startTurn();
     std::string move();
     RussianBankField getField() const;
+    void setField(RussianBankField);
+    bool isHandInHand() const;
     bool end() const;
 private:
     bool finished_;
+    bool hand_in_hand_;
     RussianBankField field_;
     std::string moveToBanks();
     std::string moveFromStock();

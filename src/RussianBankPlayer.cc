@@ -4,7 +4,7 @@ using namespace std;
 
 
 RussianBankPlayer::RussianBankPlayer(RussianBankField field):
-    finished_(false), field_(field) {}
+    finished_(false), hand_in_hand_(false), field_(field) {}
 
 
 RussianBankPlayer::~RussianBankPlayer() {}
@@ -30,12 +30,34 @@ string RussianBankPlayer::move() {
 }
 
 
-RussianBankField RussianBankPlayer::getField() const {
-    return field_;
-}
-
-
 string RussianBankPlayer::moveToBanks() {
+    for (int i=0; i<4; ++i) {
+        for (int j=0; j<2; ++j) {
+            int wanted_rank = field_.getBanks(i, j).getRank() + 1;
+            if (field_.getExposedStocksStack(1).size() > 0) {
+                Card card = field_.getExposedStocksStack(1).back();
+                if ((card.getRank() == 1) && field_.getBanks(i, j).isEmpty()) {
+                    field_.moveCard(0, 4 + i + 4 * j, 1);
+                    return "0 to " + to_string(4 + i + 4 * j);
+                } else if ((field_.getBanks(i, j).getSuit() == card.getSuit())
+                           && (wanted_rank == card.getRank())) {
+                    field_.moveCard(0, 4 + i + 4 * j, 1);
+                    return "0 to " + to_string(4 + i + 4 * j);
+                }
+            }
+            if (hand_in_hand_ && (field_.getHandsStack(1).size() > 0)) {
+                Card card = field_.getHandsStack(1).back();
+                if ((card.getRank() == 1) && field_.getBanks(i, j).isEmpty()) {
+                    field_.moveCard(1, 4 + i + 4 * j, 1);
+                    return "1 to " + to_string(4 + i + 4 * j);
+                } else if ((field_.getBanks(i, j).getSuit() == card.getSuit())
+                           && (wanted_rank == card.getRank())) {
+                    field_.moveCard(1, 4 + i + 4 * j, 1);
+                    return "1 to " + to_string(4 + i + 4 * j);
+                }
+            }
+        }
+    }
     for (int i=0; i<4; ++i) {
         for (int j=0; j<2; ++j) {
             int wanted_rank = field_.getBanks(i, j).getRank() + 1;
@@ -63,6 +85,29 @@ string RussianBankPlayer::moveFromStock() {
         field_.exposeStockCard(1);
         return "0";
     }
+    cout << endl;
+    cout << endl;
+    cout << endl;
+    cout << "1" << endl;
+    Card stock_card = field_.getExposedStocksStack(1).back();
+    // Move stock card to stack in tableau
+    for (int i=0; i<8; ++i) {
+        if (field_.getTableauStack(i).size() > 0) {
+            Card tableau_card = field_.getTableauStack(i).back();
+            if (stock_card.getRank() + 1 == tableau_card.getRank()
+                && stock_card.getColor() != tableau_card.getColor()) {
+                field_.moveCard(0, 12 + i, 1);
+                return "0 to " + to_string(12 + i);
+            }
+        }
+    }
+    // Move stock card to space in tableau
+    for (int i=0; i<8; ++i) {
+        if (field_.getTableauStack(i).size() == 0) {
+                field_.moveCard(0, 12 + i, 1);
+                return "0 to " + to_string(12 + i);
+        }
+    }
     return "";
 }
 
@@ -74,11 +119,33 @@ string RussianBankPlayer::moveFromHand() {
             return "Big Josh";
         }
     } else {
-        field_.discard(1);
-        finished_ = true;
-        return "end";
+        if (!hand_in_hand_) {
+            hand_in_hand_ = true;
+            return "1";
+        } else {
+            field_.discard(1);
+            finished_ = true;
+            hand_in_hand_ = false;
+            return "end";
+        }
     }
     return "";
+}
+
+
+RussianBankField RussianBankPlayer::getField() const {
+    return field_;
+}
+
+
+void RussianBankPlayer::setField(RussianBankField field) {
+    field_ = field;
+    return;
+}
+
+
+bool RussianBankPlayer::isHandInHand() const {
+    return hand_in_hand_;
 }
 
 

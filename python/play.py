@@ -126,6 +126,7 @@ def main():
 
     print("\n" * 55)
 
+    robot = rb.RussianBankPlayer(field)
     is_shown = False
     while True:
         checkGameDone(field)
@@ -136,12 +137,16 @@ def main():
             while True:
                 value, player, is_shown = getMove(field, player, is_shown)
                 if value:
+                    robot.startTurn()
                     break
         else:
-            robot = rb.RussianBankPlayer(field)
+            robot.setField(field)
             value = robot.move()
             field = robot.getField()
-            display(field, 2)
+            status = 2
+            if robot.isHandInHand():
+                status = 1
+            display(field, status)
             sys.stdout.write("\x1b7\x1b[15;0f")
             sys.stdout.flush()
             input("Player 1's move: {0}".format(value))

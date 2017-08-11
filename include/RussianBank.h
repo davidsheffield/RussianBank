@@ -50,6 +50,8 @@ BOOST_PYTHON_MODULE(russianbank)
         .def("startTurn", &RussianBankPlayer::startTurn)
         .def("move", &RussianBankPlayer::move)
         .def("getField", &RussianBankPlayer::getField)
+        .def("setField", &RussianBankPlayer::setField)
+        .def("isHandInHand", &RussianBankPlayer::isHandInHand)
         .def("end", &RussianBankPlayer::end)
         ;
 }
