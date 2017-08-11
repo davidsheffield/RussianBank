@@ -5,6 +5,7 @@
 
 #include "Card.h"
 #include "RussianBankField.h"
+#include "RussianBankNeuralNetwork.h"
 #include "RussianBankPlayer.h"
 
 
@@ -54,6 +55,11 @@ BOOST_PYTHON_MODULE(russianbank)
         .def("isHandInHand", &RussianBankPlayer::isHandInHand)
         .def("end", &RussianBankPlayer::end)
         ;
+    boost::python::class_<RussianBankNeuralNetwork>("RussianBankNeuralNetwork",
+                                                    boost::python::init<boost::python::list&>())
+        .def("getOutput", &RussianBankNeuralNetwork::getOutput)
+        ;
+    boost::python::class_<std::vector<double>>("vector_double");
 }
 
 #endif
