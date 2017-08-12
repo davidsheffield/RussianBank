@@ -25,6 +25,7 @@ public:
     Stack getHandsStack(const int) const;
     Stack getWastesStack(const int) const;
     int moveCard(const int, const int, const int);
+    int moveCardInt(const int, const int);
     int moveCardForce(const int, const int, const int);
     int exposeStockCard(const int);
     int hideStockCard(const int);
@@ -41,6 +42,7 @@ private:
     Stack exposed_stocks_[2];
     Stack hands_[2];
     Stack wastes_[2];
+    int move_table[136][2];
 
     void deal(const int);
     boost::python::list stack_to_list(const Stack&) const;

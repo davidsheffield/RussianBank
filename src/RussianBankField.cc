@@ -5,6 +5,14 @@ using namespace std;
 
 RussianBankField::RussianBankField(const int seed) {
     deal(seed);
+    for (int i=0; i<8; ++i) {
+        for (int j=0; j<18; ++j) {
+            if (i == j - 10)
+                continue;
+            move_table[i * 18 + j][0] = i + 12;
+            move_table[i * 18 + j][1] = j + 2;
+        }
+    }
 }
 
 
@@ -292,6 +300,29 @@ int RussianBankField::moveCard(const int initial, const int final,
         }
     }
     return 5;
+}
+
+
+int RussianBankField::moveCardInt(const int move, const int player) {
+    if (move == 0)
+        return exposeStockCard(player);
+    if (move == 1) {
+        if (hands_[player].size() == 0)
+            return bigJosh(player);
+        else
+            return 0;
+    }
+    if (move == 2)
+        return discard(player);
+    if (move >= 3 && move <= 20)
+        return moveCard(0, move - 1, player);
+    if (move >= 21 && move <= 38)
+        return moveCard(1, move - 19, player);
+    if (move >= 39 && move <= 174) {
+        return moveCard(move_table[move - 39][0], move_table[move - 39][1],
+                        player);
+    }
+    return 1000;
 }
 
 

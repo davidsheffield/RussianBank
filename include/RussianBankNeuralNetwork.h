@@ -9,7 +9,7 @@
 #include "RussianBankField.h"
 
 #define kINPUTS 294
-#define kOUTPUTS 106
+#define kOUTPUTS 175
 
 
 class RussianBankNeuralNetwork
