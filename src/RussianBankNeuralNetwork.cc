@@ -13,10 +13,17 @@ RussianBankNeuralNetwork::RussianBankNeuralNetwork(
     }
     num_layer_neurons_.push_back(kOUTPUTS);
 
-    for (uint i=0; i<num_layers_; ++i) {
-        vector<double> weights;
-        for (int j=0; j<num_layer_neurons_[i]+1; ++j) {
-            weights.push_back(0.0);
+    // Loop over layers
+    for (uint i=1; i<num_layers_; ++i) {
+        vector<vector<double>> weights;
+        // Loop over layer's neurons
+        for (int j=0; j<num_layer_neurons_[i]; ++j) {
+            vector<double> w;
+            // Loop over last layer's neurons
+            for (int k=0; k<num_layer_neurons_[i-1]+1; ++k) {
+                w.push_back(0.0);
+            }
+            weights.push_back(w);
         }
         weights_.push_back(weights);
     }
@@ -26,11 +33,47 @@ RussianBankNeuralNetwork::RussianBankNeuralNetwork(
 RussianBankNeuralNetwork::~RussianBankNeuralNetwork() {}
 
 
+void RussianBankNeuralNetwork::setRandomWeights() {
+    default_random_engine generator(time(0));
+    uniform_real_distribution<double> distribution(-1.0, 1.0);
+    // Loop over layers
+    for (uint i=1; i<num_layers_; ++i) {
+        // Loop over layer's neurons
+        for (int j=0; j<num_layer_neurons_[i]; ++j) {
+            // Loop over last layer's neurons
+            for (int k=0; k<num_layer_neurons_[i-1]+1; ++k) {
+                weights_[i-1][j][k] = distribution(generator);
+            }
+        }
+    }
+    return;
+}
+
+
+boost::python::list RussianBankNeuralNetwork::getWeights() const {
+    boost::python::list l1;
+    for (vector<vector<vector<double>>>::const_iterator it=weights_.begin();
+         it!=weights_.end(); ++it) {
+        boost::python::list l2;
+        for (vector<vector<double>>::const_iterator itt=it->begin();
+             itt!=it->end(); ++itt) {
+            boost::python::object get_iter = boost::python::iterator<vector<double>>();
+            boost::python::object iter = get_iter(&*itt);
+            boost::python::list l3(iter);
+            l2.append(l3);
+        }
+        l1.append(l2);
+    }
+    return l1;
+}
+
+
 void RussianBankNeuralNetwork::setInput(const RussianBankField field,
                                         const int player,
                                         const bool hand_in_hand) {
     layers_.clear();
     vector<double> layer;
+    layer.push_back(1.0);
     for (int i=0; i<4; ++i) {
         for (int j=0; j<2; ++j) {
             layer.push_back(static_cast<double>(field.getBanks(i, j).getRank()));
@@ -86,23 +129,22 @@ void RussianBankNeuralNetwork::setInput(const RussianBankField field,
         layer.push_back(-1.0);
     }
     layers_.push_back(layer);
-    cout << "layer dimension " << layer.size() << endl;
     return;
 }
 
 
 void RussianBankNeuralNetwork::feedforward() {
     // Loop over layers
-    for (uint i=0; i<num_layers_-1; ++i) {
+    for (uint i=1; i<num_layers_; ++i) {
         vector<double> layer;
-        if (i < num_layers_ - 2)
+        if (i < num_layers_ - 1)
             layer.push_back(1.0);
         // Loop over layer's neurons
-        for (int j=0; j<num_layer_neurons_[i+1]; ++j) {
+        for (int j=0; j<num_layer_neurons_[i]; ++j) {
             double value = 0.0;
             // Loop over last layer's neurons
-            for (int k=0; k<num_layer_neurons_[i]+1; ++k) {
-                value += layers_[i][k] * weights_[i][k];
+            for (int k=0; k<num_layer_neurons_[i-1]+1; ++k) {
+                value += layers_[i-1][k] * weights_[i-1][j][k];
             }
             layer.push_back(tanh(value));
         }

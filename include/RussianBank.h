@@ -58,6 +58,8 @@ BOOST_PYTHON_MODULE(russianbank)
         ;
     boost::python::class_<RussianBankNeuralNetwork>("RussianBankNeuralNetwork",
                                                     boost::python::init<boost::python::list&>())
+        .def("setRandomWeights", &RussianBankNeuralNetwork::setRandomWeights)
+        .def("getWeights", &RussianBankNeuralNetwork::getWeights)
         .def("setInput", &RussianBankNeuralNetwork::setInput)
         .def("feedforward", &RussianBankNeuralNetwork::feedforward)
         .def("getOutput", &RussianBankNeuralNetwork::getOutput)
