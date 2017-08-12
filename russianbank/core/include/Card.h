@@ -1,5 +1,5 @@
-#ifndef CARD_h
-#define CARD_h
+#ifndef CORE_CARD_h
+#define CORE_CARD_h
 
 #include <string>
 #include <vector>

@@ -1,5 +1,5 @@
-#ifndef RUSSIANBANKPLAYER_h
-#define RUSSIANBANKPLAYER_h
+#ifndef CORE_RUSSIANBANKPLAYER_h
+#define CORE_RUSSIANBANKPLAYER_h
 
 #include <iostream>
 

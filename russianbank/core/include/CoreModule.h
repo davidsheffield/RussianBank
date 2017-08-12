@@ -1,5 +1,5 @@
-#ifndef RUSSIANBANK_h
-#define RUSSIANBANK_h
+#ifndef CORE_COREMODULE_h
+#define CORE_COREMODULE_h
 
 #include <boost/python.hpp>
 
@@ -9,7 +9,7 @@
 #include "RussianBankPlayer.h"
 
 
-BOOST_PYTHON_MODULE(russianbank)
+BOOST_PYTHON_MODULE(core_module)
 {
     boost::python::class_<RussianBankField>("RussianBankField",
                                             boost::python::init<int>())

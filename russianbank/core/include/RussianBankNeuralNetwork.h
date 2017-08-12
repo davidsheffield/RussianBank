@@ -1,5 +1,5 @@
-#ifndef RUSSIANBANKNEURALNETWORK_h
-#define RUSSIANBANKNEURALNETWORK_h
+#ifndef CORE_RUSSIANBANKNEURALNETWORK_h
+#define CORE_RUSSIANBANKNEURALNETWORK_h
 
 #include <boost/python.hpp>
 #include <cmath>

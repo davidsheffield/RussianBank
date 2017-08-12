@@ -1,8 +1,4 @@
-import sys
-sys.path.append('build/lib.macosx-10.7-x86_64-3.6/')
 import russianbank as rb
-sys.path.append('python/')
-from display import *
 
 
 def main():
@@ -317,7 +313,7 @@ def main():
     field.bigJosh(0)
     field.moveCard(1, 17, 0)
 
-    display(field, 2)
+    rb.core.display.display(field, 2)
 
     num_stock = len(field.getExposedStocks(1)) + len(field.getHiddenStocks(1))
     num_hand = len(field.getHands(1)) + len(field.getWastes(1))

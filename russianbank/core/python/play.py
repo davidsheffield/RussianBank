@@ -1,9 +1,6 @@
 import random
-import sys
-sys.path.append('build/lib.macosx-10.7-x86_64-3.6/')
 import russianbank as rb
-sys.path.append('python/')
-from display import getDisplayString, cardFront
+import sys
 
 
 def exitGame():
@@ -38,7 +35,7 @@ def printMoveError(text):
 def display(field, player):
     sys.stdout.write("\x1b7\x1b[4;0f                                        ")
     sys.stdout.write('\x1b7\x1b[5;0f{0}'.format(
-        getDisplayString(field, player)))
+        rb.getDisplayString(field, player)))
     sys.stdout.write("\x1b7\x1b[13;0f                                        ")
     sys.stdout.flush()
 
@@ -81,7 +78,7 @@ def getMove(field, player, is_shown):
         for player_ in range(2):
             cards = ""
             for card in field.getExposedStocks(player_):
-                cards += " {0}".format(cardFront(card))
+                cards += " {0}".format(rb.core.display.cardFront(card))
             sys.stdout.write("\x1b7\x1b[{0};0fOn player {1}'s stock:{2}".format(
                 13 - 9*player_, player_, cards))
             sys.stdout.flush()

@@ -1,5 +1,5 @@
-#ifndef RUSSIANBANKFIELD_h
-#define RUSSIANBANKFIELD_h
+#ifndef CORE_RUSSIANBANKFIELD_h
+#define CORE_RUSSIANBANKFIELD_h
 
 #include <algorithm>
 #include <boost/python.hpp>

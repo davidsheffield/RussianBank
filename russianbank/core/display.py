@@ -1,7 +1,6 @@
+import russianbank as rb
 import sys
 from termcolor import colored
-sys.path.append('build/lib.macosx-10.7-x86_64-3.6/')
-import russianbank as rb
 
 
 def cardBack(card):
@@ -101,7 +100,7 @@ def display(field, state):
 
 def main():
     field = rb.RussianBankField(0)
-    display(field)
+    display(field, 2)
 
 
 if __name__ == '__main__':
