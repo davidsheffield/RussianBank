@@ -57,7 +57,10 @@ BOOST_PYTHON_MODULE(russianbank)
         ;
     boost::python::class_<RussianBankNeuralNetwork>("RussianBankNeuralNetwork",
                                                     boost::python::init<boost::python::list&>())
+        .def("setInput", &RussianBankNeuralNetwork::setInput)
+        .def("feedforward", &RussianBankNeuralNetwork::feedforward)
         .def("getOutput", &RussianBankNeuralNetwork::getOutput)
+        .def("getMove", &RussianBankNeuralNetwork::getMove)
         ;
     boost::python::class_<std::vector<double>>("vector_double");
 }
