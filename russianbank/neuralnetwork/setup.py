@@ -16,6 +16,13 @@ def setup_package(args):
                         libraries = ["boost_python3"],
                         extra_compile_args=['-std=c++11','-stdlib=libc++'],
                         extra_link_args=['-stdlib=libc++'],
+              ),
+              Extension("match",
+                        ["russianbank/neuralnetwork/src/Match.cc"],
+                        include_dirs=['russianbank/'],
+                        libraries = ["boost_python3"],
+                        extra_compile_args=['-std=c++11','-stdlib=libc++'],
+                        extra_link_args=['-stdlib=libc++'],
               )
           ])
     if args == ["clean", "--all"]:
