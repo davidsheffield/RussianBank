@@ -1,10 +1,9 @@
-#include "neuralnetwork/include/RussianBankNeuralNetwork.h"
+#include "neuralnetwork/include/NeuralNetwork.h"
 
 using namespace std;
 
 
-RussianBankNeuralNetwork::RussianBankNeuralNetwork(
-    const boost::python::list &num_hidden_neurons) {
+NeuralNetwork::NeuralNetwork(const boost::python::list &num_hidden_neurons) {
     num_layers_ = 2 + len(num_hidden_neurons);
     num_layer_neurons_.push_back(kINPUTS);
     for (int i=0; i<len(num_hidden_neurons); ++i) {
@@ -30,10 +29,10 @@ RussianBankNeuralNetwork::RussianBankNeuralNetwork(
 }
 
 
-RussianBankNeuralNetwork::~RussianBankNeuralNetwork() {}
+NeuralNetwork::~NeuralNetwork() {}
 
 
-void RussianBankNeuralNetwork::setRandomWeights() {
+void NeuralNetwork::setRandomWeights() {
     default_random_engine generator(time(0));
     uniform_real_distribution<double> distribution(-1.0, 1.0);
     // Loop over layers
@@ -50,7 +49,7 @@ void RussianBankNeuralNetwork::setRandomWeights() {
 }
 
 
-boost::python::list RussianBankNeuralNetwork::getWeights() const {
+boost::python::list NeuralNetwork::getWeights() const {
     boost::python::list l1;
     for (vector<vector<vector<double>>>::const_iterator it=weights_.begin();
          it!=weights_.end(); ++it) {
@@ -68,7 +67,7 @@ boost::python::list RussianBankNeuralNetwork::getWeights() const {
 }
 
 
-void RussianBankNeuralNetwork::setInput(const RussianBankField field,
+void NeuralNetwork::setInput(const Field field,
                                         const int player,
                                         const bool hand_in_hand) {
     layers_.clear();
@@ -133,7 +132,7 @@ void RussianBankNeuralNetwork::setInput(const RussianBankField field,
 }
 
 
-void RussianBankNeuralNetwork::feedforward() {
+void NeuralNetwork::feedforward() {
     // Loop over layers
     for (uint i=1; i<num_layers_; ++i) {
         vector<double> layer;
@@ -154,7 +153,7 @@ void RussianBankNeuralNetwork::feedforward() {
 }
 
 
-boost::python::list RussianBankNeuralNetwork::getOutput() const {
+boost::python::list NeuralNetwork::getOutput() const {
     // Convert vector to Python list
     boost::python::object get_iter = boost::python::iterator<vector<double>>();
     boost::python::object iter = get_iter(&layers_.back());
@@ -162,7 +161,8 @@ boost::python::list RussianBankNeuralNetwork::getOutput() const {
     return l;
 }
 
-int RussianBankNeuralNetwork::getMove() const {
+
+int NeuralNetwork::getMove() const {
     int move = -1;
     if (layers_.size() != num_layers_)
         return move;

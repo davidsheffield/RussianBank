@@ -1,9 +1,9 @@
-#include "core/include/RussianBankField.h"
+#include "core/include/Field.h"
 
 using namespace std;
 
 
-RussianBankField::RussianBankField(const int seed) {
+Field::Field(const int seed) {
     deal(seed);
     for (int i=0; i<8; ++i) {
         for (int j=0; j<18; ++j) {
@@ -16,10 +16,10 @@ RussianBankField::RussianBankField(const int seed) {
 }
 
 
-RussianBankField::~RussianBankField() {}
+Field::~Field() {}
 
 
-void RussianBankField::deal(const int seed) {
+void Field::deal(const int seed) {
     // Populate decks
     Stack decks[2];
     for (int i=0; i<2; ++i) {
@@ -52,7 +52,7 @@ void RussianBankField::deal(const int seed) {
 }
 
 
-boost::python::list RussianBankField::stack_to_list(const Stack& stack) const {
+boost::python::list Field::stack_to_list(const Stack& stack) const {
     boost::python::object get_iter = boost::python::iterator<Stack>();
     boost::python::object iter = get_iter(stack);
     boost::python::list l(iter);
@@ -60,62 +60,62 @@ boost::python::list RussianBankField::stack_to_list(const Stack& stack) const {
 }
 
 
-Card RussianBankField::getBanks(const int i, const int j) const {
+Card Field::getBanks(const int i, const int j) const {
     return banks_[i][j];
 }
 
 
-boost::python::list RussianBankField::getTableau(const int i) const {
+boost::python::list Field::getTableau(const int i) const {
     return stack_to_list(tableau_[i]);
 }
 
 
-boost::python::list RussianBankField::getHiddenStocks(const int i) const {
+boost::python::list Field::getHiddenStocks(const int i) const {
     return stack_to_list(hidden_stocks_[i]);
 }
 
 
-boost::python::list RussianBankField::getExposedStocks(const int i) const {
+boost::python::list Field::getExposedStocks(const int i) const {
     return stack_to_list(exposed_stocks_[i]);
 }
 
 
-boost::python::list RussianBankField::getHands(const int i) const {
+boost::python::list Field::getHands(const int i) const {
     return stack_to_list(hands_[i]);
 }
 
 
-boost::python::list RussianBankField::getWastes(const int i) const {
+boost::python::list Field::getWastes(const int i) const {
     return stack_to_list(wastes_[i]);
 }
 
 
-Stack RussianBankField::getTableauStack(const int i) const {
+Stack Field::getTableauStack(const int i) const {
     return tableau_[i];
 }
 
 
-Stack RussianBankField::getHiddenStocksStack(const int i) const {
+Stack Field::getHiddenStocksStack(const int i) const {
     return hidden_stocks_[i];
 }
 
 
-Stack RussianBankField::getExposedStocksStack(const int i) const {
+Stack Field::getExposedStocksStack(const int i) const {
     return exposed_stocks_[i];
 }
 
 
-Stack RussianBankField::getHandsStack(const int i) const {
+Stack Field::getHandsStack(const int i) const {
     return hands_[i];
 }
 
 
-Stack RussianBankField::getWastesStack(const int i) const {
+Stack Field::getWastesStack(const int i) const {
     return wastes_[i];
 }
 
 
-Card RussianBankField::getStockCard(const int player) {
+Card Field::getStockCard(const int player) {
     if (exposed_stocks_[player].size() > 0)
         return exposed_stocks_[player].back();
     else
@@ -123,7 +123,7 @@ Card RussianBankField::getStockCard(const int player) {
 }
 
 
-Card RussianBankField::getHiddenStockCard(const int player) {
+Card Field::getHiddenStockCard(const int player) {
     if (hidden_stocks_[player].size() > 0)
         return hidden_stocks_[player].back();
     else
@@ -131,7 +131,7 @@ Card RussianBankField::getHiddenStockCard(const int player) {
 }
 
 
-Card RussianBankField::getHandCard(const int player) {
+Card Field::getHandCard(const int player) {
     if (hands_[player].size() > 0)
         return hands_[player].back();
     else
@@ -139,7 +139,7 @@ Card RussianBankField::getHandCard(const int player) {
 }
 
 
-Card RussianBankField::getWasteCard(const int player) {
+Card Field::getWasteCard(const int player) {
     if (wastes_[player].size() > 0)
         return wastes_[player].back();
     else
@@ -147,7 +147,7 @@ Card RussianBankField::getWasteCard(const int player) {
 }
 
 
-Card RussianBankField::getTableauCard(const int position) {
+Card Field::getTableauCard(const int position) {
     if (tableau_[position].size() > 0)
         return tableau_[position].back();
     else
@@ -155,7 +155,7 @@ Card RussianBankField::getTableauCard(const int position) {
 }
 
 
-Card RussianBankField::getTopCard(const int position, const int player) {
+Card Field::getTopCard(const int position, const int player) {
     if (position == 0)
         return getStockCard(player);
     else if (position == 1)
@@ -181,7 +181,7 @@ Card RussianBankField::getTopCard(const int position, const int player) {
 }
 
 
-void RussianBankField::popCard(const int position, const int player) {
+void Field::popCard(const int position, const int player) {
     if (position == 0)
         exposed_stocks_[player].pop_back();
     else if (position == 1)
@@ -212,7 +212,7 @@ void RussianBankField::popCard(const int position, const int player) {
 }
 
 
-void RussianBankField::pushCard(const int position, const int player,
+void Field::pushCard(const int position, const int player,
                                 const Card card) {
     if (position == 0)
         exposed_stocks_[player].push_back(card);
@@ -239,7 +239,7 @@ void RussianBankField::pushCard(const int position, const int player,
 }
 
 
-int RussianBankField::moveCard(const int initial, const int final,
+int Field::moveCard(const int initial, const int final,
                                const int player) {
     if (initial == final)
         return 1;
@@ -303,7 +303,7 @@ int RussianBankField::moveCard(const int initial, const int final,
 }
 
 
-int RussianBankField::moveCardInt(const int move, const int player) {
+int Field::moveCardInt(const int move, const int player) {
     if (move == 0)
         return exposeStockCard(player);
     if (move == 1) {
@@ -326,7 +326,7 @@ int RussianBankField::moveCardInt(const int move, const int player) {
 }
 
 
-int RussianBankField::moveCardForce(const int initial, const int final,
+int Field::moveCardForce(const int initial, const int final,
                                     const int player) {
     if (initial == final)
         return 1;
@@ -346,7 +346,7 @@ int RussianBankField::moveCardForce(const int initial, const int final,
 }
 
 
-int RussianBankField::exposeStockCard(const int player) {
+int Field::exposeStockCard(const int player) {
     if (exposed_stocks_[player].size() > 0)
         return 1;
     if (hidden_stocks_[player].size() == 0)
@@ -357,7 +357,7 @@ int RussianBankField::exposeStockCard(const int player) {
 }
 
 
-int RussianBankField::hideStockCard(const int player) {
+int Field::hideStockCard(const int player) {
     if (exposed_stocks_[player].size() != 1)
         return 1;
     hidden_stocks_[player].push_back(exposed_stocks_[player].back());
@@ -366,7 +366,7 @@ int RussianBankField::hideStockCard(const int player) {
 }
 
 
-int RussianBankField::discard(const int player) {
+int Field::discard(const int player) {
     if (hands_[player].size() == 0)
         return 1;
     wastes_[player].push_back(hands_[player].back());
@@ -375,7 +375,7 @@ int RussianBankField::discard(const int player) {
 }
 
 
-int RussianBankField::bigJosh(const int player) {
+int Field::bigJosh(const int player) {
     if (hands_[player].size() != 0)
         return 1;
     if (wastes_[player].size() == 0)
@@ -387,7 +387,7 @@ int RussianBankField::bigJosh(const int player) {
 }
 
 
-int RussianBankField::popCardSafe(const int position, const int player) {
+int Field::popCardSafe(const int position, const int player) {
     if (position < 0 || position > 23)
         return 2;
 
@@ -400,7 +400,7 @@ int RussianBankField::popCardSafe(const int position, const int player) {
 }
 
 
-int RussianBankField::pushCardSafe(const int position, const int player,
+int Field::pushCardSafe(const int position, const int player,
                                    const Card card) {
     if (position < 0 || position > 23)
         return 2;
@@ -410,7 +410,7 @@ int RussianBankField::pushCardSafe(const int position, const int player,
 }
 
 
-bool RussianBankField::operator==(const RussianBankField &rhs) const {
+bool Field::operator==(const Field &rhs) const {
     for (int i=0; i<4; ++i) {
         for (int j=0; j<2; ++j) {
             if (banks_[i][j] != getBanks(i, j))
@@ -432,6 +432,6 @@ bool RussianBankField::operator==(const RussianBankField &rhs) const {
 }
 
 
-bool RussianBankField::operator!=(const RussianBankField &rhs) const {
+bool Field::operator!=(const Field &rhs) const {
     return !(*this == rhs);
 }

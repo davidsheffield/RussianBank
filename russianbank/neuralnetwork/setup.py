@@ -11,7 +11,7 @@ def setup_package(args):
           script_args = args,
           ext_modules=[
               Extension("network",
-                        ["russianbank/neuralnetwork/src/RussianBankNeuralNetwork.cc"],
+                        ["russianbank/neuralnetwork/src/NeuralNetwork.cc"],
                         include_dirs=['russianbank/'],
                         libraries = ["boost_python3"],
                         extra_compile_args=['-std=c++11','-stdlib=libc++'],

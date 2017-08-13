@@ -1,22 +1,22 @@
-#include "core/include/RussianBankPlayer.h"
+#include "core/include/Player.h"
 
 using namespace std;
 
 
-RussianBankPlayer::RussianBankPlayer(RussianBankField field):
+Player::Player(Field field):
     finished_(false), hand_in_hand_(false), field_(field) {}
 
 
-RussianBankPlayer::~RussianBankPlayer() {}
+Player::~Player() {}
 
 
-void RussianBankPlayer::startTurn() {
+void Player::startTurn() {
     finished_ = false;
     return;
 }
 
 
-string RussianBankPlayer::move() {
+string Player::move() {
     string response = moveToBanks();
     if (response != "")
         return response;
@@ -30,7 +30,7 @@ string RussianBankPlayer::move() {
 }
 
 
-string RussianBankPlayer::moveToBanks() {
+string Player::moveToBanks() {
     for (int i=0; i<4; ++i) {
         for (int j=0; j<2; ++j) {
             int wanted_rank = field_.getBanks(i, j).getRank() + 1;
@@ -80,7 +80,7 @@ string RussianBankPlayer::moveToBanks() {
 }
 
 
-string RussianBankPlayer::moveFromStock() {
+string Player::moveFromStock() {
     if (field_.getExposedStocksStack(1).size() == 0) {
         field_.exposeStockCard(1);
         return "0";
@@ -112,7 +112,7 @@ string RussianBankPlayer::moveFromStock() {
 }
 
 
-string RussianBankPlayer::moveFromHand() {
+string Player::moveFromHand() {
     if (field_.getHandsStack(1).size() == 0) {
         if (field_.getWastesStack(1).size() > 0) {
             field_.bigJosh(1);
@@ -133,22 +133,22 @@ string RussianBankPlayer::moveFromHand() {
 }
 
 
-RussianBankField RussianBankPlayer::getField() const {
+Field Player::getField() const {
     return field_;
 }
 
 
-void RussianBankPlayer::setField(RussianBankField field) {
+void Player::setField(Field field) {
     field_ = field;
     return;
 }
 
 
-bool RussianBankPlayer::isHandInHand() const {
+bool Player::isHandInHand() const {
     return hand_in_hand_;
 }
 
 
-bool RussianBankPlayer::end() const {
+bool Player::end() const {
     return finished_;
 }

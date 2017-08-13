@@ -99,7 +99,7 @@ def display(field, state):
 
 
 def main():
-    field = rb.RussianBankField(0)
+    field = rb.Field(0)
     display(field, 2)
 
 

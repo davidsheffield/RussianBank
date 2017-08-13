@@ -103,7 +103,7 @@ def getMove(field, player, is_shown):
 
 
 def main():
-    field = rb.RussianBankField(random.randint(1, 1000000))
+    field = rb.Field(random.randint(1, 1000000))
 
     # First player
     player = 0
@@ -123,7 +123,7 @@ def main():
 
     print("\n" * 55)
 
-    robot = rb.RussianBankPlayer(field)
+    robot = rb.Player(field)
     is_shown = False
     while True:
         checkGameDone(field)

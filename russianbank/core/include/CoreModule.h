@@ -4,31 +4,30 @@
 #include <boost/python.hpp>
 
 #include "core/include/Card.h"
-#include "core/include/RussianBankField.h"
-#include "core/include/RussianBankPlayer.h"
+#include "core/include/Field.h"
+#include "core/include/Player.h"
 
 
 BOOST_PYTHON_MODULE(core_module)
 {
-    boost::python::class_<RussianBankField>("RussianBankField",
-                                            boost::python::init<int>())
-        .def("getBanks", &RussianBankField::getBanks)
-        .def("getTableau", &RussianBankField::getTableau)
-        .def("getHiddenStocks", &RussianBankField::getHiddenStocks)
-        .def("getExposedStocks", &RussianBankField::getExposedStocks)
-        .def("getHands", &RussianBankField::getHands)
-        .def("getWastes", &RussianBankField::getWastes)
-        .def("moveCard", &RussianBankField::moveCard)
-        .def("moveCardInt", &RussianBankField::moveCardInt)
-        .def("moveCardForce", &RussianBankField::moveCardForce)
-        .def("exposeStockCard", &RussianBankField::exposeStockCard)
-        .def("hideStockCard", &RussianBankField::hideStockCard)
-        .def("discard", &RussianBankField::discard)
-        .def("bigJosh", &RussianBankField::bigJosh)
-        .def("popCard", &RussianBankField::popCardSafe)
-        .def("pushCard", &RussianBankField::pushCardSafe)
-        .def("__eq__", &RussianBankField::operator==)
-        .def("__ne__", &RussianBankField::operator!=)
+    boost::python::class_<Field>("Field", boost::python::init<int>())
+        .def("getBanks", &Field::getBanks)
+        .def("getTableau", &Field::getTableau)
+        .def("getHiddenStocks", &Field::getHiddenStocks)
+        .def("getExposedStocks", &Field::getExposedStocks)
+        .def("getHands", &Field::getHands)
+        .def("getWastes", &Field::getWastes)
+        .def("moveCard", &Field::moveCard)
+        .def("moveCardInt", &Field::moveCardInt)
+        .def("moveCardForce", &Field::moveCardForce)
+        .def("exposeStockCard", &Field::exposeStockCard)
+        .def("hideStockCard", &Field::hideStockCard)
+        .def("discard", &Field::discard)
+        .def("bigJosh", &Field::bigJosh)
+        .def("popCard", &Field::popCardSafe)
+        .def("pushCard", &Field::pushCardSafe)
+        .def("__eq__", &Field::operator==)
+        .def("__ne__", &Field::operator!=)
         ;
     boost::python::class_<Card>("Card")
         .def(boost::python::init<int, int, bool>())
@@ -46,14 +45,13 @@ BOOST_PYTHON_MODULE(core_module)
         .def("__repr__", &Card::getCard)
         ;
     boost::python::class_<Stack>("Stack");
-    boost::python::class_<RussianBankPlayer>("RussianBankPlayer",
-                                             boost::python::init<RussianBankField>())
-        .def("startTurn", &RussianBankPlayer::startTurn)
-        .def("move", &RussianBankPlayer::move)
-        .def("getField", &RussianBankPlayer::getField)
-        .def("setField", &RussianBankPlayer::setField)
-        .def("isHandInHand", &RussianBankPlayer::isHandInHand)
-        .def("end", &RussianBankPlayer::end)
+    boost::python::class_<Player>("Player", boost::python::init<Field>())
+        .def("startTurn", &Player::startTurn)
+        .def("move", &Player::move)
+        .def("getField", &Player::getField)
+        .def("setField", &Player::setField)
+        .def("isHandInHand", &Player::isHandInHand)
+        .def("end", &Player::end)
         ;
 }
 

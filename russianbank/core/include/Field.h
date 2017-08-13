@@ -1,5 +1,5 @@
-#ifndef CORE_RUSSIANBANKFIELD_h
-#define CORE_RUSSIANBANKFIELD_h
+#ifndef CORE_FIELD_h
+#define CORE_FIELD_h
 
 #include <algorithm>
 #include <boost/python.hpp>
@@ -8,11 +8,11 @@
 
 #include "core/include/Card.h"
 
-class RussianBankField
+class Field
 {
 public:
-    RussianBankField(const int);
-    ~RussianBankField();
+    Field(const int);
+    ~Field();
     Card getBanks(const int, const int) const;
     boost::python::list getTableau(const int) const;
     boost::python::list getHiddenStocks(const int) const;
@@ -33,8 +33,8 @@ public:
     int bigJosh(const int);
     int popCardSafe(const int, const int);
     int pushCardSafe(const int, const int, const Card);
-    bool operator==(const RussianBankField&) const;
-    bool operator!=(const RussianBankField&) const;
+    bool operator==(const Field&) const;
+    bool operator!=(const Field&) const;
 private:
     Card banks_[4][2];
     Stack tableau_[8];

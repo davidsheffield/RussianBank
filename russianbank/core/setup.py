@@ -12,9 +12,9 @@ def setup_package(args):
           ext_modules=[
               Extension("core_module",
                         ["russianbank/core/src/CoreModule.cc",
-                         "russianbank/core/src/RussianBankField.cc",
+                         "russianbank/core/src/Field.cc",
                          "russianbank/core/src/Card.cc",
-                         "russianbank/core/src/RussianBankPlayer.cc"],
+                         "russianbank/core/src/Player.cc"],
                         include_dirs=['russianbank/'],
                         libraries = ["boost_python3"],
                         extra_compile_args=['-std=c++11','-stdlib=libc++'],

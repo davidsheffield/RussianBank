@@ -2,7 +2,7 @@ import russianbank as rb
 
 
 def main():
-    field = rb.RussianBankField(1)
+    field = rb.Field(1)
 
     field.moveCard(19, 15, 0)
     field.exposeStockCard(0)
