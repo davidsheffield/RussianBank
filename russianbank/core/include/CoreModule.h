@@ -3,10 +3,9 @@
 
 #include <boost/python.hpp>
 
-#include "Card.h"
-#include "RussianBankField.h"
-#include "RussianBankNeuralNetwork.h"
-#include "RussianBankPlayer.h"
+#include "core/include/Card.h"
+#include "core/include/RussianBankField.h"
+#include "core/include/RussianBankPlayer.h"
 
 
 BOOST_PYTHON_MODULE(core_module)
@@ -56,16 +55,6 @@ BOOST_PYTHON_MODULE(core_module)
         .def("isHandInHand", &RussianBankPlayer::isHandInHand)
         .def("end", &RussianBankPlayer::end)
         ;
-    boost::python::class_<RussianBankNeuralNetwork>("RussianBankNeuralNetwork",
-                                                    boost::python::init<boost::python::list&>())
-        .def("setRandomWeights", &RussianBankNeuralNetwork::setRandomWeights)
-        .def("getWeights", &RussianBankNeuralNetwork::getWeights)
-        .def("setInput", &RussianBankNeuralNetwork::setInput)
-        .def("feedforward", &RussianBankNeuralNetwork::feedforward)
-        .def("getOutput", &RussianBankNeuralNetwork::getOutput)
-        .def("getMove", &RussianBankNeuralNetwork::getMove)
-        ;
-    boost::python::class_<std::vector<double>>("vector_double");
 }
 
 #endif

@@ -1,4 +1,4 @@
-#include "RussianBankNeuralNetwork.h"
+#include "neuralnetwork/include/RussianBankNeuralNetwork.h"
 
 using namespace std;
 

@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-#include "RussianBankField.h"
+#include "core/include/RussianBankField.h"
 
 
 class RussianBankPlayer

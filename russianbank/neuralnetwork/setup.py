@@ -6,15 +6,12 @@ import os
 
 def setup_package(args):
     if args == ["build"]:
-        args = ["build_ext", "--build-lib", "russianbank/core/"]
-    setup(name="core",
+        args = ["build_ext", "--build-lib", "russianbank/neuralnetwork/"]
+    setup(name="neuralnetwork",
           script_args = args,
           ext_modules=[
-              Extension("core_module",
-                        ["russianbank/core/src/CoreModule.cc",
-                         "russianbank/core/src/RussianBankField.cc",
-                         "russianbank/core/src/Card.cc",
-                         "russianbank/core/src/RussianBankPlayer.cc"],
+              Extension("network",
+                        ["russianbank/neuralnetwork/src/RussianBankNeuralNetwork.cc"],
                         include_dirs=['russianbank/'],
                         libraries = ["boost_python3"],
                         extra_compile_args=['-std=c++11','-stdlib=libc++'],
@@ -22,7 +19,7 @@ def setup_package(args):
               )
           ])
     if args == ["clean", "--all"]:
-        for filename in glob.glob('russianbank/core/*.so'):
+        for filename in glob.glob('russianbank/neuralnetwork/*.so'):
             os.remove(filename)
 
 
