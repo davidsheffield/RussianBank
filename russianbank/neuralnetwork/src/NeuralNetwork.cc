@@ -3,6 +3,32 @@
 using namespace std;
 
 
+NeuralNetwork::NeuralNetwork(const vector<int> num_hidden_neurons) {
+    num_layers_ = 2 + num_hidden_neurons.size();
+    num_layer_neurons_.push_back(kINPUTS);
+    for (vector<int>::const_iterator it=num_hidden_neurons.begin();
+         it!=num_hidden_neurons.end(); ++it) {
+        num_layer_neurons_.push_back(*it);
+    }
+    num_layer_neurons_.push_back(kOUTPUTS);
+
+    // Loop over layers
+    for (uint i=1; i<num_layers_; ++i) {
+        vector<vector<double>> weights;
+        // Loop over layer's neurons
+        for (int j=0; j<num_layer_neurons_[i]; ++j) {
+            vector<double> w;
+            // Loop over last layer's neurons
+            for (int k=0; k<num_layer_neurons_[i-1]+1; ++k) {
+                w.push_back(0.0);
+            }
+            weights.push_back(w);
+        }
+        weights_.push_back(weights);
+    }
+}
+
+
 NeuralNetwork::NeuralNetwork(const boost::python::list &num_hidden_neurons) {
     num_layers_ = 2 + len(num_hidden_neurons);
     num_layer_neurons_.push_back(kINPUTS);
@@ -49,7 +75,56 @@ void NeuralNetwork::setRandomWeights() {
 }
 
 
-boost::python::list NeuralNetwork::getWeights() const {
+int NeuralNetwork::setWeights(const vector<vector<vector<double>>> weights) {
+    if (weights_.size() != weights.size())
+        return 1;
+    for (uint i=0; i<weights_.size(); ++i) {
+        if (weights_[i].size() != weights[i].size())
+            return 1;
+        for (uint j=0; j<weights_[i].size(); ++j) {
+            if (weights_[i][j].size() != weights[i][j].size())
+                return 1;
+        }
+    }
+    weights_ = weights;
+    return 0;
+}
+
+
+int NeuralNetwork::setWeightsList(const boost::python::list &weights) {
+    if (weights_.size() != static_cast<uint>(len(weights)))
+        return 1;
+    vector<vector<vector<double>>> v1;
+    for (uint i=0; i<weights_.size(); ++i) {
+        boost::python::list l2
+            = boost::python::extract<boost::python::list>(weights[i]);
+        if (weights_[i].size() != static_cast<uint>(len(l2)))
+            return 1;
+        vector<vector<double>> v2;
+        for (uint j=0; j<weights_[i].size(); ++j) {
+            boost::python::list l3
+                = boost::python::extract<boost::python::list>(l2[j]);
+            if (weights_[i][j].size() != static_cast<uint>(len(l3)))
+                return 1;
+            vector<double> v3;
+            for (int k=0; k<len(l3); ++k) {
+                v3.push_back(boost::python::extract<double>(l3[k]));
+            }
+            v2.push_back(v3);
+        }
+        v1.push_back(v2);
+    }
+    weights_ = v1;
+    return 0;
+}
+
+
+vector<vector<vector<double>>> NeuralNetwork::getWeights() const {
+    return weights_;
+}
+
+
+boost::python::list NeuralNetwork::getWeightsList() const {
     boost::python::list l1;
     for (vector<vector<vector<double>>>::const_iterator it=weights_.begin();
          it!=weights_.end(); ++it) {

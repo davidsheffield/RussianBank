@@ -16,10 +16,14 @@
 class NeuralNetwork
 {
 public:
+    NeuralNetwork(const std::vector<int>);
     NeuralNetwork(const boost::python::list&);
     ~NeuralNetwork();
     void setRandomWeights();
-    boost::python::list getWeights() const;
+    int setWeights(const std::vector<std::vector<std::vector<double>>>);
+    int setWeightsList(const boost::python::list&);
+    std::vector<std::vector<std::vector<double>>> getWeights() const;
+    boost::python::list getWeightsList() const;
     void setInput(const Field, const int, const bool);
     void feedforward();
     boost::python::list getOutput() const;
@@ -37,7 +41,8 @@ BOOST_PYTHON_MODULE(network)
     boost::python::class_<NeuralNetwork>("NeuralNetwork",
                                          boost::python::init<boost::python::list&>())
         .def("setRandomWeights", &NeuralNetwork::setRandomWeights)
-        .def("getWeights", &NeuralNetwork::getWeights)
+        .def("setWeights", &NeuralNetwork::setWeightsList)
+        .def("getWeights", &NeuralNetwork::getWeightsList)
         .def("setInput", &NeuralNetwork::setInput)
         .def("feedforward", &NeuralNetwork::feedforward)
         .def("getOutput", &NeuralNetwork::getOutput)
