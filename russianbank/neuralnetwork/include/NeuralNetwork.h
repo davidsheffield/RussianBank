@@ -13,6 +13,9 @@
 #define kOUTPUTS 175
 
 
+typedef std::vector<std::vector<std::vector<double>>> WeightsContainer;
+typedef std::vector<std::vector<double>> Matrix;
+
 class NeuralNetwork
 {
 public:
@@ -20,9 +23,9 @@ public:
     NeuralNetwork(const boost::python::list&);
     ~NeuralNetwork();
     void setRandomWeights();
-    int setWeights(const std::vector<std::vector<std::vector<double>>>);
+    int setWeights(const WeightsContainer);
     int setWeightsList(const boost::python::list&);
-    std::vector<std::vector<std::vector<double>>> getWeights() const;
+    WeightsContainer getWeights() const;
     boost::python::list getWeightsList() const;
     void setInput(const Field, const int, const bool);
     void feedforward();
@@ -31,8 +34,8 @@ public:
 private:
     uint num_layers_;
     std::vector<int> num_layer_neurons_;
-    std::vector<std::vector<std::vector<double>>> weights_;
-    std::vector<std::vector<double>> layers_;
+    WeightsContainer weights_;
+    Matrix layers_;
 };
 
 

@@ -45,7 +45,7 @@ void Evolve::breed() {
     }
     nets_.erase(nets_.begin() + num_keep_, nets_.end());
 
-    vector<vector<vector<vector<double>>>> parent_weights;
+    vector<WeightsContainer> parent_weights;
     for (int i=0; i<num_keep_; ++i) {
         nets_[i].second = 0.0;
         parent_weights.push_back(nets_[i].first.getWeights());
@@ -56,11 +56,11 @@ void Evolve::breed() {
     neurons.push_back(1000);
     for (int i=0; i<num_nets_-num_keep_; ++i) {
         NeuralNetwork net(neurons);
-        vector<vector<vector<double>>> weights;
+        WeightsContainer weights;
         for (uint j=0; j<parent_weights[0].size(); ++j) {
             uniform_int_distribution<int> distribution(0, parent_weights[0][j].size() - 1);
             int cutoff = distribution(generator);
-            vector<vector<double>> w;
+            Matrix w;
             w.insert(w.begin(), parent_weights[0][j].begin(),
                      parent_weights[0][j].begin() + cutoff);
             w.insert(w.end(), parent_weights[1][j].begin() + cutoff,

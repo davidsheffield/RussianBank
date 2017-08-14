@@ -14,7 +14,7 @@ NeuralNetwork::NeuralNetwork(const vector<int> num_hidden_neurons) {
 
     // Loop over layers
     for (uint i=1; i<num_layers_; ++i) {
-        vector<vector<double>> weights;
+        Matrix weights;
         // Loop over layer's neurons
         for (int j=0; j<num_layer_neurons_[i]; ++j) {
             vector<double> w;
@@ -40,7 +40,7 @@ NeuralNetwork::NeuralNetwork(const boost::python::list &num_hidden_neurons) {
 
     // Loop over layers
     for (uint i=1; i<num_layers_; ++i) {
-        vector<vector<double>> weights;
+        Matrix weights;
         // Loop over layer's neurons
         for (int j=0; j<num_layer_neurons_[i]; ++j) {
             vector<double> w;
@@ -75,7 +75,7 @@ void NeuralNetwork::setRandomWeights() {
 }
 
 
-int NeuralNetwork::setWeights(const vector<vector<vector<double>>> weights) {
+int NeuralNetwork::setWeights(const WeightsContainer weights) {
     if (weights_.size() != weights.size())
         return 1;
     for (uint i=0; i<weights_.size(); ++i) {
@@ -94,13 +94,13 @@ int NeuralNetwork::setWeights(const vector<vector<vector<double>>> weights) {
 int NeuralNetwork::setWeightsList(const boost::python::list &weights) {
     if (weights_.size() != static_cast<uint>(len(weights)))
         return 1;
-    vector<vector<vector<double>>> v1;
+    WeightsContainer v1;
     for (uint i=0; i<weights_.size(); ++i) {
         boost::python::list l2
             = boost::python::extract<boost::python::list>(weights[i]);
         if (weights_[i].size() != static_cast<uint>(len(l2)))
             return 1;
-        vector<vector<double>> v2;
+        Matrix v2;
         for (uint j=0; j<weights_[i].size(); ++j) {
             boost::python::list l3
                 = boost::python::extract<boost::python::list>(l2[j]);
@@ -119,17 +119,17 @@ int NeuralNetwork::setWeightsList(const boost::python::list &weights) {
 }
 
 
-vector<vector<vector<double>>> NeuralNetwork::getWeights() const {
+WeightsContainer NeuralNetwork::getWeights() const {
     return weights_;
 }
 
 
 boost::python::list NeuralNetwork::getWeightsList() const {
     boost::python::list l1;
-    for (vector<vector<vector<double>>>::const_iterator it=weights_.begin();
+    for (WeightsContainer::const_iterator it=weights_.begin();
          it!=weights_.end(); ++it) {
         boost::python::list l2;
-        for (vector<vector<double>>::const_iterator itt=it->begin();
+        for (Matrix::const_iterator itt=it->begin();
              itt!=it->end(); ++itt) {
             boost::python::object get_iter = boost::python::iterator<vector<double>>();
             boost::python::object iter = get_iter(&*itt);
