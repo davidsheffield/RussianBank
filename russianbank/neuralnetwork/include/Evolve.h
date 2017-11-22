@@ -19,9 +19,15 @@ class Evolve
 {
 public:
     Evolve();
+    Evolve(const boost::python::list&);
     ~Evolve();
     void playMatches();
     void breed();
+    std::vector<NeuralNetwork> getNeuralNetworks() const;
+    boost::python::list getNeuralNetworksList() const;
+    std::vector<double> getPoints() const;
+    boost::python::list getPointsList() const;
+    void sortNeuralNetworks();
 private:
     int num_nets_;
     Nets nets_;
@@ -34,8 +40,12 @@ private:
 BOOST_PYTHON_MODULE(evolve)
 {
     boost::python::class_<Evolve>("Evolve")
+        .def(boost::python::init<boost::python::list&>())
         .def("playMatches", &Evolve::playMatches)
         .def("breed", &Evolve::breed)
+        .def("getNeuralNetworks", &Evolve::getNeuralNetworksList)
+        .def("getPoints", &Evolve::getPointsList)
+        .def("sort", &Evolve::sortNeuralNetworks)
         ;
 }
 

@@ -15,6 +15,23 @@ Evolve::Evolve() {
 }
 
 
+Evolve::Evolve(const boost::python::list& nets) {
+    num_nets_ = 8;
+    for (int i=0; i<len(nets); ++i) {
+        nets_.push_back(pair<NeuralNetwork, double>(
+                            boost::python::extract<NeuralNetwork>(nets[i]),
+                            0.0));
+    }
+    vector<int> neurons;
+    neurons.push_back(1000);
+    for (int i=len(nets); i<num_nets_; ++i) {
+        NeuralNetwork net(neurons);
+        net.setRandomWeights();
+        nets_.push_back(pair<NeuralNetwork, double>(net, 0.0));
+    }
+}
+
+
 Evolve::~Evolve() {}
 
 
@@ -71,6 +88,48 @@ void Evolve::breed() {
         nets_.push_back(pair<NeuralNetwork, double>(net, 0.0));
     }
 
+    return;
+}
+
+
+vector<NeuralNetwork> Evolve::getNeuralNetworks() const {
+    vector<NeuralNetwork> nets_vector;
+    for (Nets::const_iterator it=nets_.begin(); it!=nets_.end(); ++it) {
+        nets_vector.push_back(it->first);
+    }
+    return nets_vector;
+}
+
+
+boost::python::list Evolve::getNeuralNetworksList() const {
+    boost::python::list nets_list;
+    for (Nets::const_iterator it=nets_.begin(); it!=nets_.end(); ++it) {
+        nets_list.append(it->first);
+    }
+    return nets_list;
+}
+
+
+vector<double> Evolve::getPoints() const {
+    vector<double> points_vector;
+    for (Nets::const_iterator it=nets_.begin(); it!=nets_.end(); ++it) {
+        points_vector.push_back(it->second);
+    }
+    return points_vector;
+}
+
+
+boost::python::list Evolve::getPointsList() const {
+    boost::python::list points_list;
+    for (Nets::const_iterator it=nets_.begin(); it!=nets_.end(); ++it) {
+        points_list.append(it->second);
+    }
+    return points_list;
+}
+
+
+void Evolve::sortNeuralNetworks() {
+    sort(nets_.begin(), nets_.end(), sortNets);
     return;
 }
 
