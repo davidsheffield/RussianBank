@@ -277,7 +277,7 @@ int Field::moveCard(const int initial, const int final,
     } else if (final <= 7) {
         if (((initial_card.getSuit() == final_card.getSuit())
              && (initial_card.getRank() - 1 == final_card.getRank()))
-            || final_card.isEmpty()) {
+            || (final_card.isEmpty() && initial_card.getRank() == 1)) {
             banks_[final % 4][0] = initial_card;
             popCard(initial, player);
             return 0;
@@ -285,7 +285,7 @@ int Field::moveCard(const int initial, const int final,
     } else if (final <= 11) {
         if (((initial_card.getSuit() == final_card.getSuit())
              && (initial_card.getRank() - 1 == final_card.getRank()))
-            || final_card.isEmpty()) {
+            || (final_card.isEmpty() && initial_card.getRank() == 1)) {
             banks_[final % 4][1] = initial_card;
             popCard(initial, player);
             return 0;
