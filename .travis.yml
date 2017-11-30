@@ -6,6 +6,7 @@ python:
 before_install:
   - brew update
   - brew install python3
+  - brew install boost-python
   - virtualenv env -p python3
   - source env/bin/activate
   - echo $PYTHON
