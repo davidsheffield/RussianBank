@@ -10,7 +10,5 @@ before_install:
   - brew install boost-python --with-python3
   - virtualenv env -p python3
   - source env/bin/activate
-install:
-  - python setup.py install
 script:
-  - python -m unittest
+  - python setup.py test
