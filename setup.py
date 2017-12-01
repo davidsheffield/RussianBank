@@ -16,7 +16,7 @@ setup(name='Russian Bank',
       url='https://github.com/davidsheffield/RussianBank',
       packages=['russianbank', 'russianbank.core', 'russianbank.neuralnetwork'],
       license='GNU GPLv3',
-      install_requires=[''],
+      install_requires=['termcolor'],
       zip_safe=False,
       ext_modules=[
           Extension("core_module",

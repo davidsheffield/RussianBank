@@ -1,6 +1,9 @@
 Russian Bank
 ============
 
+.. image:: https://travis-ci.org/davidsheffield/RussianBank.svg?branch=master
+    :target: https://travis-ci.org/davidsheffield/RussianBank
+
 Code to play Russian Bank.
 
 Positions
