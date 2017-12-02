@@ -43,13 +43,13 @@ BOOST_PYTHON_MODULE(network)
 {
     boost::python::class_<NeuralNetwork>("NeuralNetwork",
                                          boost::python::init<boost::python::list&>())
-        .def("setRandomWeights", &NeuralNetwork::setRandomWeights)
-        .def("setWeights", &NeuralNetwork::setWeightsList)
-        .def("getWeights", &NeuralNetwork::getWeightsList)
-        .def("setInput", &NeuralNetwork::setInput)
+        .def("set_random_weights", &NeuralNetwork::setRandomWeights)
+        .def("set_weights", &NeuralNetwork::setWeightsList)
+        .def("get_weights", &NeuralNetwork::getWeightsList)
+        .def("set_input", &NeuralNetwork::setInput)
         .def("feedforward", &NeuralNetwork::feedforward)
-        .def("getOutput", &NeuralNetwork::getOutput)
-        .def("getMove", &NeuralNetwork::getMove)
+        .def("get_output", &NeuralNetwork::getOutput)
+        .def("get_move", &NeuralNetwork::getMove)
         ;
     boost::python::class_<std::vector<double>>("vector_double");
 }

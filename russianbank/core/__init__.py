@@ -1,2 +1,2 @@
 from core_module import *
-from .display import getDisplayString
+from .display import get_display_string

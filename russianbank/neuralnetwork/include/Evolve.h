@@ -41,10 +41,10 @@ BOOST_PYTHON_MODULE(evolve)
 {
     boost::python::class_<Evolve>("Evolve")
         .def(boost::python::init<boost::python::list&>())
-        .def("playMatches", &Evolve::playMatches)
+        .def("play_matches", &Evolve::playMatches)
         .def("breed", &Evolve::breed)
-        .def("getNeuralNetworks", &Evolve::getNeuralNetworksList)
-        .def("getPoints", &Evolve::getPointsList)
+        .def("get_neural_networks", &Evolve::getNeuralNetworksList)
+        .def("get_points", &Evolve::getPointsList)
         .def("sort", &Evolve::sortNeuralNetworks)
         ;
 }

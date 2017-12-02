@@ -29,9 +29,9 @@ private:
 BOOST_PYTHON_MODULE(match)
 {
     boost::python::class_<Match>("Match", boost::python::init<NeuralNetwork, NeuralNetwork, int>())
-        .def("setMaxTurns", &Match::setMaxTurns)
-        .def("setMaxMoves", &Match::setMaxMoves)
-        .def("getPoints", &Match::getPoints)
+        .def("set_max_turns", &Match::setMaxTurns)
+        .def("set_max_moves", &Match::setMaxMoves)
+        .def("get_points", &Match::getPoints)
         .def("play", &Match::play)
         ;
 }
