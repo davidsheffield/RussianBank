@@ -31,20 +31,108 @@ class TestMove(unittest.TestCase):
                          msg='Allows illegal move')
 
 
+    def test_playable_to_bank(self):
+        field = rb.Field(1)
+
+        initial_card = rb.Card(1, 0, False)
+        final_card = rb.Card()
+        self.assertTrue(field.playableToBank(initial_card, final_card),
+                        msg='Disallows valid move')
+
+        initial_card = rb.Card(2, 0, True)
+        final_card = rb.Card(1, 0, False)
+        self.assertTrue(field.playableToBank(initial_card, final_card),
+                        msg='Disallows valid move')
+
+        initial_card = rb.Card(2, 0, False)
+        final_card = rb.Card()
+        self.assertFalse(field.playableToBank(initial_card, final_card),
+                         msg='Allows invalid move')
+
+        initial_card = rb.Card(3, 0, False)
+        final_card = rb.Card(1, 0, True)
+        self.assertFalse(field.playableToBank(initial_card, final_card),
+                         msg='Allows invalid move')
+
+        initial_card = rb.Card(2, 1, False)
+        final_card = rb.Card(3, 1, True)
+        self.assertFalse(field.playableToBank(initial_card, final_card),
+                         msg='Allows invalid move')
+
+        initial_card = rb.Card(5, 2, True)
+        final_card = rb.Card(4, 1, True)
+        self.assertFalse(field.playableToBank(initial_card, final_card),
+                         msg='Allows invalid move')
+
+
+    def test_playable_to_player(self):
+        field = rb.Field(1)
+
+        initial_card = rb.Card(6, 1, False)
+        final_card = rb.Card(5, 1, True)
+        self.assertTrue(field.playableToPlayer(initial_card, final_card),
+                        msg='Disallows valid move')
+
+        initial_card = rb.Card(5, 1, False)
+        final_card = rb.Card(6, 1, True)
+        self.assertTrue(field.playableToPlayer(initial_card, final_card),
+                        msg='Disallows valid move')
+
+        initial_card = rb.Card(4, 3, False)
+        final_card = rb.Card()
+        self.assertFalse(field.playableToPlayer(initial_card, final_card),
+                         msg='Allows invalid move')
+
+        initial_card = rb.Card(5, 1, False)
+        final_card = rb.Card(6, 2, True)
+        self.assertFalse(field.playableToPlayer(initial_card, final_card),
+                         msg='Allows invalid move')
+
+        initial_card = rb.Card(4, 3, False)
+        final_card = rb.Card(6, 3, False)
+        self.assertFalse(field.playableToPlayer(initial_card, final_card),
+                         msg='Allows invalid move')
+
+
+    def test_playable_to_tableau(self):
+        field = rb.Field(1)
+
+        initial_card = rb.Card(13, 2, True)
+        final_card = rb.Card()
+        self.assertTrue(field.playableToTableau(initial_card, final_card),
+                        msg='Disallows valid move')
+
+        suit_pairs = [[0, 1], [0, 3], [1, 2]]
+        for pair in suit_pairs:
+            initial_card = rb.Card(10, pair[0], True)
+            final_card = rb.Card(11, pair[1], False)
+            self.assertTrue(field.playableToTableau(initial_card, final_card),
+                            msg='Disallows valid move')
+
+        suit_pairs = [[0, 0], [0, 2], [1, 1], [1, 3], [2, 2], [3, 3]]
+        for pair in suit_pairs:
+            initial_card = rb.Card(10, pair[0], True)
+            final_card = rb.Card(11, pair[1], False)
+            self.assertFalse(field.playableToTableau(initial_card, final_card),
+                             msg='Allows invalid move')
+
+        initial_card = rb.Card(5, 0, False)
+        final_card = rb.Card(8, 1, False)
+        self.assertFalse(field.playableToTableau(initial_card, final_card),
+                         msg='Allows invalid move')
+
+
     def test_to_stock(self):
         field = rb.Field(1)
-        # field.exposeStockCard(1)
         initial_card = 12
         final_card = 2
         field.pushCard(final_card, 0, rb.Card(5, 0, True))
         field.pushCard(initial_card, 0, rb.Card(6, 0, False))
         field.pushCard(initial_card + 1, 0, rb.Card(5, 0, True))
-        # print(rb.getDisplayString(field, 2))
         self.assertEqual(field.moveCard(initial_card, final_card, 0), 0,
                          msg='Cannot move to stock')
         self.assertEqual(field.moveCard(initial_card + 1, final_card, 0), 0,
                          msg='Cannot move to stock')
-        # print(rb.getDisplayString(field, 2))
 
 
     def test_to_waste(self):
@@ -70,7 +158,6 @@ class TestMove(unittest.TestCase):
                          msg='Allows illegal move to waste')
 
 
-    # @unittest.SkipTest
     def test_to_bank(self):
         field = rb.Field(1)
         initial_card = 12
@@ -93,7 +180,6 @@ class TestMove(unittest.TestCase):
                          msg='Allows illegal move to bank')
 
         field.pushCard(initial_card, 0, rb.Card(2, 0, False))
-        # print(rb.getDisplayString(field, 2))
         self.assertEqual(field.moveCard(initial_card, final_card - 1, 0), 5,
                          msg='Allows illegal move to bank')
 

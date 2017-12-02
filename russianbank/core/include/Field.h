@@ -33,6 +33,9 @@ public:
     int bigJosh(const int);
     int popCardSafe(const int, const int);
     int pushCardSafe(const int, const int, const Card);
+    bool playableToBank(const Card, const Card) const;
+    bool playableToPlayer(const Card, const Card) const;
+    bool playableToTableau(const Card, const Card) const;
     bool operator==(const Field&) const;
     bool operator!=(const Field&) const;
 private:

@@ -257,43 +257,31 @@ int Field::moveCard(const int initial, const int final,
     Card final_card = getTopCard(final, player);
 
     if (final == 2) {
-        if (final_card.notEmpty()
-            && (initial_card.getSuit() == final_card.getSuit())
-            && ((initial_card.getRank() + 1 == final_card.getRank())
-                || (initial_card.getRank() - 1 == final_card.getRank()))) {
+        if (playableToPlayer(initial_card, final_card)) {
             exposed_stocks_[(player == 0) ? 1 : 0].push_back(initial_card);
             popCard(initial, player);
             return 0;
         }
     } else if (final == 3) {
-        if (final_card.notEmpty()
-            && (initial_card.getSuit() == final_card.getSuit())
-            && ((initial_card.getRank() + 1 == final_card.getRank())
-                || (initial_card.getRank() - 1 == final_card.getRank()))) {
+        if (playableToPlayer(initial_card, final_card)) {
             wastes_[(player == 0) ? 1 : 0].push_back(initial_card);
             popCard(initial, player);
             return 0;
         }
     } else if (final <= 7) {
-        if (((initial_card.getSuit() == final_card.getSuit())
-             && (initial_card.getRank() - 1 == final_card.getRank()))
-            || (final_card.isEmpty() && initial_card.getRank() == 1)) {
+        if (playableToBank(initial_card, final_card)) {
             banks_[final % 4][0] = initial_card;
             popCard(initial, player);
             return 0;
         }
     } else if (final <= 11) {
-        if (((initial_card.getSuit() == final_card.getSuit())
-             && (initial_card.getRank() - 1 == final_card.getRank()))
-            || (final_card.isEmpty() && initial_card.getRank() == 1)) {
+        if (playableToBank(initial_card, final_card)) {
             banks_[final % 4][1] = initial_card;
             popCard(initial, player);
             return 0;
         }
     } else {
-        if ((((initial_card.getSuit() ^ final_card.getSuit()) & 1)
-             && (initial_card.getRank() + 1 == final_card.getRank()))
-            || final_card.isEmpty()) {
+        if (playableToTableau(initial_card, final_card)) {
             tableau_[final - 12].push_back(initial_card);
             popCard(initial, player);
             return 0;
@@ -400,13 +388,37 @@ int Field::popCardSafe(const int position, const int player) {
 }
 
 
-int Field::pushCardSafe(const int position, const int player,
-                                   const Card card) {
+int Field::pushCardSafe(const int position, const int player, const Card card) {
     if (position < 0 || position > 23)
         return 2;
 
     pushCard(position, player, card);
     return 0;
+}
+
+
+bool Field::playableToBank(const Card initial_card, const Card final_card)
+    const {
+    return (((initial_card.getSuit() == final_card.getSuit())
+             && (initial_card.getRank() - 1 == final_card.getRank()))
+            || (final_card.isEmpty() && initial_card.getRank() == 1));
+}
+
+
+bool Field::playableToPlayer(const Card initial_card, const Card final_card)
+    const {
+    return (final_card.notEmpty()
+            && (initial_card.getSuit() == final_card.getSuit())
+            && ((initial_card.getRank() + 1 == final_card.getRank())
+                || (initial_card.getRank() - 1 == final_card.getRank())));
+}
+
+
+bool Field::playableToTableau(const Card initial_card, const Card final_card)
+    const {
+    return ((((initial_card.getSuit() ^ final_card.getSuit()) & 1)
+             && (initial_card.getRank() + 1 == final_card.getRank()))
+            || final_card.isEmpty());
 }
 
 
